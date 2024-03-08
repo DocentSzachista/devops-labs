@@ -194,14 +194,23 @@ CMD ["nginx", "-g", "daemon off;"]
 docker pull mongo
 ```
 
+Na systemach operacyjnych typu Linux, może z automatu nie dodać waszego użytkownika do grupy docker. Jeżeli nie chcecie musieć dorzucać sudo do każdej komendy pożyteczne może być dodanie swojego konta do grupy docker. [Źródło](https://askubuntu.com/questions/477551/how-can-i-use-docker-without-sudo). 
+
+```
+ sudo gpasswd -a $USER docker
+```
+
+
+
 
 ## Zadania
 
-### Co wysyłacie na e-portal/Githuba
+### Co wysyłacie na Githuba
 
 - plik dockerfile z bakcend-em 
 - plik docker-compose (jeżeli ktoś zrobi zadanie na 5.0)
-- Notatnik z listą komend które są wymagane do zaliczenia zadania.
+- Notatnik z listą komend które są wymagane do zaliczenia zadania. (prosiłbym żeby to było w roocie projektu jedynie)
+- Chciałbym aby to wszystko było zrobione w ramach Pull Requesta do repozytorium. Pull Requesty jak zostaną ocenione zostaną zamknięte z komentarzem. 
 
 ### 3.0 - Hello world w Dockerfile 
 Pobrać repozytorium a następnie w folderze `fiszki_backend` stworzyć plik Dockerfile. Następnie należy dodać:
@@ -222,7 +231,7 @@ Nasza aplikacja powinna obsługiwać połączenie z bazą danych **mongoDB**. Wa
 - Odpalić ponownie kontener z back-endem, tym razem dodając jako parametr sieć do której ma zostać podpięty.
 - To samo zrobić z obrazem bazy danych mongoDB 
 - [Wskazówka](#łączenie-się-między-kontenerami) jak sprawdzić czy sieć którą stworzycie, ma podpięty jakikolwiek kontener.
-- Chciałbym też żeby dockerfile który odpalicie 
+
 <!-- - Odpalić obraz z udostępnieniem portu 27017 -->
 
 ### 4.5 - Dodanie wolumenów do Dockerfile'a z bazą danych
@@ -297,7 +306,7 @@ Gdzie:
 
 - `networks:` Definicje sieci używane przez usługi, tutaj app-network jest siecią, która łączy wszystkie trzy usługi.
 
-**Warte wspomnienia** - Docker defaultowo sobie konfiguruje sieć w której są podpięte wszystkie kontenery
+**Warte wspomnienia** - Docker-compose domyślnie sobie konfiguruje sieć w której są podpięte wszystkie kontenery
 
 #### Komendy
 
