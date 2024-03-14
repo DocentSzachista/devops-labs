@@ -235,10 +235,10 @@ Nasza aplikacja powinna obsługiwać połączenie z bazą danych **mongoDB**. Wa
 <!-- - Odpalić obraz z udostępnieniem portu 27017 -->
 
 ### 4.5 - Dodanie wolumenów do Dockerfile'a z bazą danych
-- Należy stworzyć wolumen dla obrazu mongodb oraz dla naszego backendu. 
-- Należy następnie odpalić nasze obrazy ponownie z dodatkową flagą `-v <nazwa_volume>:/<sciezka_do_danych_w_kontenerze>`
+- Należy stworzyć wolumen dla obrazu mongodb. 
+- Należy następnie odpalić nasz obraz z bazą danych ponownie z dodatkową flagą `-v <nazwa_volume>:/<sciezka_do_danych_w_kontenerze>`
 
-- Weryfikacja czy wasz wolumen działa (na podstawie backendu):
+- Weryfikacja czy wasz wolumen działa (na podstawie konteneru o nazwie backend):
 ```
 docker exec -it backend bash
 echo "Dane testowe" > /app/plik_testowy.txt
