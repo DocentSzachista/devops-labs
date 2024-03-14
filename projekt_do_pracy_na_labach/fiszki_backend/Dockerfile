@@ -18,7 +18,7 @@ CMD ["python", "main.py"]
 
 #docker run -p 8000 fiszki_backend 
 
-#docker network create siec1
+#docker network create web_example
 
 #docker run --network=web_example fiszki_backend
 
