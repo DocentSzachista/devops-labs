@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  frontend:
+    # build: .
+    image: fiszki_fend:latest
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+    networks:
+      - fiszki
+
+  backend:
+    image: fiszki_bend:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - fiszki
+      
+  db:
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - fiszki
+
+volumes:
+  mongo_data:
+
+networks:
+  app-network:
