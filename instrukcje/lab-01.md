@@ -231,7 +231,7 @@ Nasza aplikacja powinna obsługiwać połączenie z bazą danych **mongoDB**. Wa
 - Odpalić ponownie kontener z back-endem, tym razem dodając jako parametr sieć do której ma zostać podpięty.
 - To samo zrobić z obrazem bazy danych mongoDB 
 - [Wskazówka](#łączenie-się-między-kontenerami) jak sprawdzić czy sieć którą stworzycie, ma podpięty jakikolwiek kontener.
-- Ważne: aby po utworzeniu sieci i dodaniu kontenerów backend umiał rozmawiać z bazą danych należy dodać zmienną środowiskową o nazwie `DATABASE_URL` która będzie miała wartość `mongodb://<nazwa_sieci>:27017`
+- Ważne: aby po utworzeniu sieci i dodaniu kontenerów backend umiał rozmawiać z bazą danych należy dodać zmienną środowiskową o nazwie `DATABASE_URL` która będzie miała wartość `mongodb://<nazwa_kontenera_bazy_danych>:27017`
 <!-- - Odpalić obraz z udostępnieniem portu 27017 -->
 
 ### 4.5 - Dodanie wolumenów do Dockerfile'a z bazą danych
