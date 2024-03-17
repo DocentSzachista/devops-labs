@@ -37,10 +37,9 @@ CMD ["python", "main.py"]
 # docker run -d --name fiszki_backend_container-v1 -p 8000:8000 fiszki_backend:v1
 
 #4.0
-################################################# komenda DATABASE_URL = mongodb://<nazwa_kontenera_bazy_danych>:27017
 # docker network create siec_1
 # docker run -d --name fiszki_back_siec -p 8000:8000 --network=siec_1 fiszki_backend:v1
-# docker run -d --name mongo_siec --network=siec_1 mongo
+# docker run -d --name mongo_siec -e DATABASE_URL=mongodb://fiszki_backend:27017 --network=siec_1 mongo
 # docker network inspect siec_1
 
 #4.5
@@ -64,4 +63,4 @@ CMD ["python", "main.py"]
 
 # w tym przypadku próbowałem wiele rozwiązań jednak okazało się że to 
 # jest jedyne dizałające, gdyż nie bylem w stanie otworzyć jednego pliku
-# `.yaml`.
+# `.yaml`. 
