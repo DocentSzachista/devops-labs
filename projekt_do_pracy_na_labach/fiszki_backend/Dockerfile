@@ -1,2 +1,67 @@
+#3.0
+# Sepcifying the base image
 FROM python:3.10
 
+LABEL container_label = " Docker labs Monday "
+
+# Setting the working directory
+WORKDIR /fiszki_backend
+
+# Coppying files form workspace to container
+# Possible to use `ADD . .`, if needed to download URL 
+COPY . /fiszki_backend/
+
+# Downloading necessary libraries from "requirements.txt"
+RUN pip install -r requirements.txt
+
+# Proposing the optimal port
+EXPOSE 8000
+
+# Command used when starting the container
+CMD ["python", "main.py"]
+
+# Command line commands
+# Building the image
+# -t: own tag
+# docker build -t <image_name> .
+# docker build -t fiszki_backend:v1 .
+
+# Starting the container 
+# -d: run container in the background and print id (keeps terminal clean)
+# --name: assign a name to the container
+# docker run -d --name <container_name> <image_name>
+# docker run -d --name fiszki_backend_container-v1 fiszki_backend:v1
+
+#3.5
+# -p: publish container to the host
+# docker run -d --name fiszki_backend_container-v1 -p 8000:8000 fiszki_backend:v1
+
+#4.0
+################################################# komenda DATABASE_URL = mongodb://<nazwa_kontenera_bazy_danych>:27017
+# docker network create siec_1
+# docker run -d --name fiszki_back_siec -p 8000:8000 --network=siec_1 fiszki_backend:v1
+# docker run -d --name mongo_siec --network=siec_1 mongo
+# docker network inspect siec_1
+
+#4.5
+# docker run -d --name fiszki_backend -p 80:80 -v wolumen:/app fiszki_backend:v1
+# docker run -d --name mongo -p 81:80 -v wolumen:/app mongo
+# docker ps
+
+# Checking if volume is connected
+# docker exec -it fiszki_backend bash
+# echo "test" > /app/test.txt
+# exit
+# docker exec -it mongo bash
+# cat /app/plik.txt -> output: test
+# exit
+
+#5.0
+# cd /<change directory>
+# docker build -t fiszki_app:v1 .
+# docker-compose up -d --force-recreate
+# docker-compose down 
+
+# w tym przypadku próbowałem wiele rozwiązań jednak okazało się że to 
+# jest jedyne dizałające, gdyż nie bylem w stanie otworzyć jednego pliku
+# `.yaml`.
