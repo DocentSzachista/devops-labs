@@ -45,7 +45,7 @@ CMD ["python", "main.py"]
 #4.5
 # docker run -d --name fiszki_backend -p 80:80 -v wolumen:/app fiszki_backend:v1
 # docker run -d --name mongo -p 81:80 -v wolumen:/app mongo
-# docker ps
+# docker volume ls
 
 # Checking if volume is connected
 # docker exec -it fiszki_backend bash
@@ -63,4 +63,5 @@ CMD ["python", "main.py"]
 
 # w tym przypadku próbowałem wiele rozwiązań jednak okazało się że to 
 # jest jedyne dizałające, gdyż nie bylem w stanie otworzyć jednego pliku
-# `.yaml`. 
+# `.yaml`. Dodatkowo na stronie w lab_1.md jest błąd odnoszący się do funkcji
+# build gdyż opis jest związany z funkcją --force-recreate
