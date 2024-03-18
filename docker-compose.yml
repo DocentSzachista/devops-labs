@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  frontend:
+    image: fiszki_frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - backend_network
+
+  backend:
+    image: fiszki_backend:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - backend_network
+    environment:
+      - DATABASE_URL=mongodb://db:27017
+
+  db:
+    image: mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend_network
+
+volumes:
+  mongo_data:
+
+networks:
+  backend_network:
