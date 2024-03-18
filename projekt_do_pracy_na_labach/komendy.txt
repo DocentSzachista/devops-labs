@@ -1,0 +1,30 @@
+3.0 - w folderze fiszki_backend
+docker build -t backend ./
+docker run --name backend -d backend
+docker ps
+
+3.5
+docker run --name backend -p 8000:8000 backend
+
+4.0
+docker network create network_1
+docker run --name mongoDB --network=network_1 -d mongo
+docker run --name backend --network=network_1 -p 8000:8000 -d backend
+docker network inspect network_1
+
+4.5
+docker volume create vol_mongo
+docker run -d --network=network_1 --name mongoDB -v vol_mongo:/app mongo
+docker exec -it mongoDB bash 
+echo "Dane testowe" > /app/plik_testowy.txt
+exit
+docker run --name backend --network=network_1 -p 8000:8000 -d backend
+docker rm -f mongoDB
+docker run -d --network=network_1 --name mongoDB -v vol_mongo:/app mongo
+docker exec -it mongoDB bash 
+cat /app/plik_testowy.txt
+
+5.0 - backend jest uruchamiany na porcie 8000, ale występuje problem z frontendem (możliwe, że z podaniem adresu backendu, ale mimo prób dalej nie ma połącznia między frontem a backiem)
+docker build -t frontend ./fiszki_app/
+docker compose up --build
+docker compose down
