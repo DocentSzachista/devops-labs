@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  fiszki_frontend:
+    build: .
+    image: frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - fiszki_backend
+    networks:
+      - fiszki_net
+    links:
+      - "fiszki_backend:backend"
+
+  fiszki_backend:
+    image: backend:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - fiszki_db
+    networks:
+      - fiszki_net
+
+  fiszki_db:
+    image: mongo:4.4.6
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - fiszki_net
+
+volumes:
+  mongo_data:
+
+networks:
+  fiszki_net:

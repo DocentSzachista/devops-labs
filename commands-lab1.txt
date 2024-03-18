@@ -1,0 +1,5 @@
+docker pull mongo:4.4.6        <=== ta wersja działa ze środowiskiem bez AVX
+docker build -t backend:latest -t backend:1.1.0 .
+docker build -t frontend:latest -t frontend:1.0.0 .
+docker run -p 9000:8000 --name fiszki_backend --rm --network fiszki_net backend:1.0.0 
+docker run --name fiszki_db --network fiszki_net -v db_volume:/usr/app --rm mongo:4.4.6
