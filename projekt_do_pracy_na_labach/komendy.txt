@@ -1,0 +1,32 @@
+Komendy użyte w trakcie zajęć.
+
+Punkt 3.0 - Hello world w Dockerfile
+
+docker build --tag fiszki_backend .
+
+Punkt 3.5 - Otworzyć aplikację na świat
+
+docker run -d --name fiszki1_container -p 8000:80 fiszki_backend
+
+Punkt 4.0 - Połączyć aplikację back-endową z bazą danych
+
+Pobranie obrazu MongoDB z repozytorium Docker:
+
+docker network create network1
+
+docker run -d --name fiszki_backend --network network1 -e DATABASE_URL=mongodb://mongo_container:27017 fiszki_backend:1.0
+
+docker run -d --name mongo_container --network network1 mongo
+
+Punkt 4.5 - Dodanie wolumenów do Dockerfile'a z bazą danych
+
+docker volume create moj_wolumen
+
+docker run -d --name mongo_container -v moj_wolumen:/data/db mongo
+
+Punkt 5.0 - Docker-compose
+Stworzenie pliku docker-compose.yml:
+
+touch docker-compose.yml
+
+docker-compose up -d
