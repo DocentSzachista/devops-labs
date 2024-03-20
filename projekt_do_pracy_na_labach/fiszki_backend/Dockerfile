@@ -1,8 +1,8 @@
 FROM python:3.10
 
-WORKDIR /app
+WORKDIR /fiszki_backend
 
-COPY . /app
+COPY . /fiszki_backend
 
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -12,9 +12,44 @@ EXPOSE 8000
 
 CMD ["python", "main.py"]
 
-# sudo docker run -p 8000:8000 --rm --name fiszki_backend fiszki_backend
+# 3.5
+# docker build -t fiszki_backend .
+# docker run -d --name fiszki_backend_cont --rm -p 8000:8000 fiszki_backend
+#
+# zeby zadzialalo stworzenie nowego kontenera z networkiem:
+# sudo docker rm -f <id konterera stworzonego wczesniej>
+#
+# 4.0
 # docker network create appnetwork
-# docker volume create vol1
-# docker volume create vol2
-# docker run -d --name mongoContainer --network appnetwork -v vol1 mongo #cos dodac? moze -e
-# docker run -p 8000:8000 -d --name fiszki_backend --network appnetwork -v vol2 fiszki_backend
+# docker run -d --name fiszki_backend_network --rm -p 8000:8000 --network=appnetwork fiszki_backend
+# docker run -d --name mongo_network -e DATABASE_URL=mongodb://mongoContainer:27017 --network=appnetwork mongo
+# docker network inspect appnetwork
+#
+# 4.5
+# docker run -d --name fiszki_backend --rm -p 800:800 -v vol1:/fiszki_backend fiszki_backend
+# docker run -d --name mongo --rm -p 80:800 -v vol1:/fiszki_backend mongo
+#
+# testing:
+# docker exec -it fiszki_backend bash
+# echo "testing" > /fiszki_backend/test.txt
+# exit
+# docker exec -it mongo bash
+# cat /fiszki_backend/test.txt
+# exit
+#
+#         _____                   /|
+#         |   \      ____        / |
+#   __    |    \    /\   |      /  ;
+#  /\  \  |     \  /  \  |     /  ;
+# /,'\  \ |      \/  : \ |    /   ;
+# ~  ;   \|      /   :  \|   /   ;
+#    |    \     /   :'  |   /    ;
+#    |     \   /    :   |  /    ;
+#    |      \ /    :'   | /     ;
+#    |       /     :    |/     ;
+#    |      /     :'    |      ;
+#     \    /      :     |     ;
+#      \  /      :'     |     ;
+#       \       :'      |    ;
+#        \______:_______|___;
+#
