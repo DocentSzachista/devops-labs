@@ -13,10 +13,10 @@ ENV DATABASE_URL=mongodb://kontener_mongodb:27017
 CMD ["python", "main.py"] 
 #1
 #docker build --tag docbuild
-#docker run backend
+#docker run dockbuild
 
 #2
-#docker run backend -p 8000:8000
+#docker run dockbuild -p 8000:8000
 
 #3
 #docker network create siec1
