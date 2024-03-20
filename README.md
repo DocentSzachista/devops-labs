@@ -1,3 +1,9 @@
+
+# Damian Janusz 259253
+
+
+
+
 # Laboratorium Specjalistyczne Platformy Programistyczne
 
 Repozytorium trzymające instrukcje do zajęć laboratoryjnych jakie prowadzę na Politechnice Wrocławskiej.

@@ -4,7 +4,7 @@ from models import Collection, FlashCard
 import os 
 
 
-db_url = os.environ.get("DATABASE_URL", "mongodb://localhost:27017")
+db_url = os.environ.get("DATABASE_URL", "mongodb://siec1:27017")#localhost
 
 
 client = motor.motor_asyncio.AsyncIOMotorClient(db_url, uuidRepresentation='standard')
