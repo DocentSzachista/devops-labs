@@ -38,15 +38,17 @@ CMD python main.py
 # docker network inspect siec
 
 ### 4.5
-# docker run -d --name fiszki_backend -p 8000:8000 -v volume:/app fiszki_backend:1.0
-# docker run -d --name mongo -p 8001:8000 -v volume:/app mongo
+# docker volume create mongo_volume
+# docker run -d --name mongo_container -v mongo_volume:/data/db mongo
 
 # Volume verification
-# docker exec -it fiszki_backend bash
-# echo "x" > /app/obj.txt
+# docker exec -it mongo_container bash
+# echo "x" > /data/db/obj.txt
 # exit
-# docker exec -it mongo bash
-# cat /app/obj.txt -> output: x
+# docker rm -f mongo_container
+# docker run -d --name test -v mongo_volume:/data/db mongo
+# docker exec -it test bash
+# cat /data/db/obj.txt -> output: x
 # exit
 
 ### 5.0
