@@ -14,17 +14,18 @@ docker network inspect network_1
 
 4.5
 docker volume create vol_mongo
-docker run -d --network=network_1 --name mongoDB -v vol_mongo:/app mongo
+docker run -d --network=network_1 --name mongoDB -v vol_mongo:/data/db mongo
 docker exec -it mongoDB bash 
-echo "Dane testowe" > /app/plik_testowy.txt
+echo "Dane testowe" > /data/db/plik_testowy.txt
 exit
 docker run --name backend --network=network_1 -p 8000:8000 -d backend
 docker rm -f mongoDB
-docker run -d --network=network_1 --name mongoDB -v vol_mongo:/app mongo
+docker run -d --network=network_1 --name mongoDB -v vol_mongo:/data/db mongo
 docker exec -it mongoDB bash 
-cat /app/plik_testowy.txt
+cat /data/db/plik_testowy.txt
 
 5.0 - backend jest uruchamiany na porcie 8000, ale występuje problem z frontendem (możliwe, że z podaniem adresu backendu, ale mimo prób dalej nie ma połącznia między frontem a backiem)
 docker build -t frontend ./fiszki_app/
 docker compose up --build
 docker compose down
+UPDATE: po usunięciu 'http://' zadziałało 

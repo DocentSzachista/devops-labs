@@ -18,7 +18,7 @@ RUN flutter config --enable-web
 RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
-RUN flutter build web --dart-define BACKEND_URL=http://localhost:8000/
+RUN flutter build web --dart-define BACKEND_URL=localhost:8000
 
 # Stage 2
 FROM nginx:1.21.1-alpine
