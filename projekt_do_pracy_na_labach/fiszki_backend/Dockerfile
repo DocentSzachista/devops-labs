@@ -35,5 +35,4 @@ CMD ["python", "main.py"]
 #docker rm mongo -f
 #docker run --network=siec -v mongo_volume:/data/db --name mongov_2 -d mongodb/mongodb-community-server
 #docker exec -it mongov_2 bash
-#Wynik: Dane testowe
 #exit

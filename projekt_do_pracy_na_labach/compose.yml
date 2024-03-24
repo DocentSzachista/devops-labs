@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  frontend:
+    image: frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    image: backend:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mongodb/mongodb-community-server
+    volumes:
+      - mongo_volume:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongo_volume:
+
+networks:
+  app-network:
+
+
+#Na 5.0
+#docker build --tag fronted . (Komenda wykonano w folderze fiszki_app)
+#docker compose up --build
+#docker compose down
