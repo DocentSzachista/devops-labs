@@ -1,0 +1,16 @@
+ld Dockrfile
+sudo docker build . 
+sudo docker ps -a
+sudo docker run -p 8000:8000 --name python python
+sudo docker ps --all 
+sudo docker build ./fiszki_backend/
+sudo docker run -p 8000:8000 --name python backend   
+sudo docker run --name mongo mongo  
+sudo docker network create siec
+sudo docker run --name backend --network siec -d backend
+sudo docker run --name mongo --network siec -d mongo 
+sudo docker inspect siec 
+sudo docker run --name backend --network siec -e DATABASE_URL="mongo://mongo:27017" -d  backend
+sudo docker run --name mongodb -v wolumen_mongo:/data/db -d mongo 
+sudo docker run -d --name backend_v2 -v wolumen_mongo:/app backend  
+/bin/bash: q: command not found
