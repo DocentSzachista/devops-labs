@@ -9,8 +9,6 @@ services:
       - fiszki_backend
     networks:
       - fiszki_net
-    links:
-      - "fiszki_backend:backend"
 
   fiszki_backend:
     image: backend:latest
@@ -27,6 +25,7 @@ services:
       - mongo_data:/data/db
     networks:
       - fiszki_net
+    container_name: fiszki_db
 
 volumes:
   mongo_data:
