@@ -1,0 +1,39 @@
+#Komendy
+
+### 3.0 - Hello world w Dockerfile 
+# docker build -t "nazwa1" ./
+
+### 3.5 - Otworzyć aplikację na świat. 
+# docker run -p 8001:8000 nazwa1
+
+### 4.0 - Połączyć aplikację back-endową z bazą danych
+# docker network create siec1
+# docker run -d --network siec1 -e DATABASE_URL="mongodb://baza_danych_1:27017" nazwa1
+# docker run -d --network siec1 --name baza_danych_1 mongo
+# docker network inspect siec1
+# docker run -d --network siec1 -e DATABASE_URL="mongodb://baza_danych_1:27017" nazwa1
+# docker run -d -p 8001:8000 --network siec1 -e DATABASE_URL="mongodb://baza_danych_1:27017" nazwa1
+
+### 4.5 - Dodanie wolumenów do Dockerfile'a z bazą danych
+# docker volume create volume_1
+# docker run -d --name backend_v2 -v volume_1:/app nazwa1 fe0281c6c321b6f5b01b68f784708cdf8541305759300114b2528508a3ed56df
+# docker exec -it backend_v2 bash
+# echo "Dane testowe" > /app/plik_testowy.txt
+# exit
+# docker rm -f backend
+# docker run -d --name backend_v2 -v moj_wolumen:/app moj_obraz
+# docker exec -it backend_v2 bash
+# cat /app/plik_testowy.txt
+# root@fe0281c6c321:/app# cat /app/plik_testowy.txt
+# Dane testowe
+
+
+### 5.0 - Docker-compose (Jako taki dodatek)
+# docker-compose up -d --build
+
+# docker-compose ps
+#                 Name                               Command               State                    Ports                  
+# -------------------------------------------------------------------------------------------------------------------------
+# projekt_do_pracy_na_labach_backend_1    python3 main.py                  Up      0.0.0.0:8000->8000/tcp,:::8000->8000/tcp
+# projekt_do_pracy_na_labach_db_1         docker-entrypoint.sh mongod      Up      27017/tcp                               
+# projekt_do_pracy_na_labach_frontend_1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:80->80/tcp,:::80->80/tcp 
