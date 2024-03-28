@@ -37,7 +37,65 @@ spec:
 - `ports` - definiuje jakie porty udostępnić i pod jakim protokołem 
 
 - `metadata` - jest to sekcja w której definiujecie najczęściej: nazwę zasobu i przestrzeń nazw (namespace) do której ma przynależeć. 
+### Kontrolery
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: apka
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend-service
+        image: fiszki_app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
 
+```
+Są to zasoby które mają monitorować czy stan jaki zdefiniowaliśmy jest osiągnięty (Na przykład czy nasz backend żyje, udostępnia odpowiednie porty, ma przekazane odpowiednie zmienne) A jeżeli chodzi o opis powyższego zasobu:
+
+- `kind`: Określa typ obiektu Kubernetes. Tutaj jest to `Deployment`, co oznacza, że definiuje się zasady dla wdrożenia aplikacji.
+- `metadata`: Metadane obiektu, takie jak nazwa, przestrzeń nazw, etykiety. 
+- `spec`: Specyfikacja wdrożenia, określająca oczekiwany stan wdrożenia.
+
+  - `replicas`: Określa liczbę replik podów dla wdrożenia (tu 1).
+  
+  - `selector`: Określa, które podzbiory powinny zostać wybrane do wdrożenia.
+    
+    - `matchLabels`: Definiuje warunki, które powinny być spełnione przez etykiety podów, aby zostały wybrane.
+
+      - `app: frontend`: Wymaga, aby wybrane pody miały etykietę `app` ustawioną na `frontend`.
+      
+  - `template`: Szablon konfiguracji nowych podów utworzonych przez wdrożenie.
+
+    - `metadata`: Metadane szablonu.
+      
+      - `labels`: Etykiety przypisane do podów tworzonych przez ten szablon.
+      
+        - `app: frontend`: Etykieta `app` ustawiona na `frontend`.
+        
+    - `spec`: Specyfikacja podów utworzonych przez ten szablon.
+      
+      - `containers`: Lista kontenerów w podzie.
+        
+        - `name`: Nazwa kontenera (`frontend-service`).
+        - `image`: Obraz Dockerowy używany do utworzenia kontenera (`fiszki_app:latest`).
+        - `imagePullPolicy`: Określa, kiedy Kubernetes ma pobrać obraz (`IfNotPresent`, pobierze tylko wtedy, gdy nie ma go lokalnie).
+        - `ports`: Lista portów, które kontener nasłuchuje.
+
+          - `containerPort: 80`: Port, na którym kontener nasłuchuje komunikacji (port 80).
 
 ## Podstawowe komendy
 ### Listowanie zasobów 
@@ -157,10 +215,12 @@ Po więcej komend opcji itd odsyłam do [dokumentacji](https://kubernetes.io/doc
 ## Wymagane narzędzia, repozytoria, etc
 - Zainstalowane:
     - Docker
-    - Minikube bądź ekwiwalent
+    - Minikube bądź ekwiwalent.
     - kubectl
 
 - Repozytorium projektu.
+
+- Polecam mieć zainstalowanego VSC'ode'a ze rozszerzeniem `Kubernetes` (Przynajmniej wam powie czy jakiś błąd robicie podczas modyfikowania yamli).
 
 ### Jak sprawdzić czy nasz minikube działa.
 
@@ -172,6 +232,19 @@ minikube start
 minikube dashboard
 ```
 Zostanie wtedy odpalona strona internetowa zawierająca widok na to co zawiera w sobie minikube (czyli wszystkie pody, deploye i innego typu zasoby)
+
+### Dodatkowe opcje konfiguracyjne które musicie zrobić
+
+Z racji tego że pracujemy na naszym lokalnym rejestrze to trzeba włączyć opcję w minikubie aby szukał wpierw obrazów na naszym lokalnym rejestrze dockerowym.
+Kroki jakie trzeba podjąć.
+
+1. W zależności od systemu operacyjnego wrzucić odpowiednią komendę w terminal:
+  - linux: `eval $(minikube docker-env)`
+  - Windows: `minikube docker-env | Invoke-Expression`
+2. Następnie włączyć minikube'a za pomocą komendy `minikube start`
+3. Zbudować obraz aplikacji którą będziemy trzymać w lokalrnym rejestrze.
+4. Aby sprawdzić czy nasz obraz jest w lokalnym rejestrze należy użyć komendy `minikube image ls`
+
 
 
 ## Zadania
@@ -256,7 +329,7 @@ Podpowiedzi:
 - Typ serwisu który chcecie stworzyć to `ClusterIP`
 - Aby wiedzieć jakie IP potem przekazać w deploymencie backendu może się okazać pomocna komenda `kubectl get SVC`
 
-**Zbyteczny** komentarz od prowadzącego: W komercyjnym świecie jako devopsi byście mieli postawić bazę danych jako DaemonSet, ale żeby nie utrudniać nam życia tworzymy to na razie jako zwykły deployment. 
+**Zbyteczny** komentarz od prowadzącego: W komercyjnym świecie jako devopsi byście mieli postawić bazę danych jako StatefullSet, ale żeby nie utrudniać nam życia tworzymy to na razie jako zwykły deployment. 
 
 
 ## Przydatne linki podczas pracy w laboratorium.
@@ -266,4 +339,4 @@ Podpowiedzi:
 
 ## Dodatkowe materiały dla poszerzenia wiedzy
 - Ładne porównanie typów [serwisów](https://kodekloud.com/blog/clusterip-nodeport-loadbalancer/)
-- 
+- Wyjaśnienie kontrolerów i ich różnic [link](https://semaphoreci.com/blog/replicaset-statefulset-daemonset-deployments)
