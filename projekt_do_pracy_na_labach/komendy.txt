@@ -6,7 +6,7 @@ docker build --tag fiszki_backend .
 
 Punkt 3.5 - Otworzyć aplikację na świat
 
-docker run -d --name fiszki1_container -p 8000:80 fiszki_backend
+docker run -d --name fiszki1_container -p 8000:8000 fiszki_backend
 
 Punkt 4.0 - Połączyć aplikację back-endową z bazą danych
 
