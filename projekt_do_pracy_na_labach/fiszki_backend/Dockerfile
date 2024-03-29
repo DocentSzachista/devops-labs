@@ -35,7 +35,7 @@ CMD ["python3", "main.py"]
 # 4.5 - Dodanie wolumenów do Dockerfile'a z bazą danych
 # Utworzenie wolumenu: docker volume create wolumen
 # Zamontowanie wolumenu z hosta do kontenera: docker run -p 8000:8000 -v wolumen:/app --name fiszki_be fiszki_be
-# Uruchomienie kontenera z bazą danych razem z wolumenem: docker run -p 27017:27017 -v wolumen:/app --name mongodb mongo:4.4.6
+# Uruchomienie kontenera z bazą danych razem z wolumenem: docker run -p 27017:27017 -v wolumen:/data/db --name mongodb mongo:4.4.6
 # Weryfikacja poprawności działania stworzonego wolumenu:
 # docker exec -it fiszki_be bash
 # echo "Dane testowe" > /app/plik_testowy.txt
