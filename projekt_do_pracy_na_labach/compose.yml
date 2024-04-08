@@ -19,7 +19,7 @@ services:
       - app-network
 
   db:
-    image: mongodb/mongodb-community-server
+    image: mongo
     volumes:
       - mongo_volume:/data/db
     networks:
