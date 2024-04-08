@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 
 RUN pip3 install -r requirements.txt
-ENV DATABASE_URL="mongodb://mongoDB:27017"
+ENV DATABASE_URL="mongodb://mongo:27017"
 EXPOSE 8000
 CMD ["python", "main.py"]
 

@@ -14,11 +14,11 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - mongo
     networks:
       - app-network
 
-  db:
+  mongo:
     image: mongo
     volumes:
       - mongo_volume:/data/db
