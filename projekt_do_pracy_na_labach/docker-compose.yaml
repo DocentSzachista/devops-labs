@@ -18,6 +18,7 @@ services:
       - db
     networks:
       - app-network
+    container_name: db
 
   db:
     image: mongo
