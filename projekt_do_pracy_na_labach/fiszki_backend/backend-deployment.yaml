@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: laby21
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-serviceee
+          image: fiszkibackend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+
+# kubectl apply -f backend-deployment.yaml
+# kubectl get deployments
+# kubectl get pods
+# kubectl describe deployment backend-deployment
+
+# kubectl apply -f backend-service.yaml
+# minikube service backend-service
+
+# kubectl delete deployments --all
+
+# kubectl create namespace nazwa_namespace
+# kubectl config set-context --current --namespace=nazwa_namespace
+
+#kubectl delete service backend-service
+
+# laby2
+
