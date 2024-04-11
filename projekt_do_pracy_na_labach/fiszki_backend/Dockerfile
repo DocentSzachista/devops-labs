@@ -38,7 +38,7 @@ docker remove f33bc5d9aecb
 docker stop 1071db122ef5
 docker remove 1071db122ef5
 docker ps
-docker run -d --name mongodb --network app-network -v mongo:/app mongo
+docker run -d --name mongodb --network app-network -v mongo:/data/db mongo
 docker run -d --name fiszki_backend2 --network app-network  -v fiszki:/app fiszki_backend
 docker exec -it fiszki_backend_kontener bash -c "echo 'Dane testowe' > /app/plik_testowy.txt"
 docker exec -it fiszki_backend2 bash -c "echo 'Dane testowe' > /app/plik_testowy.txt"
