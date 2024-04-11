@@ -35,7 +35,7 @@ CMD ["python", "main.py"]
 #
 # 4.5
 # docker run -d --name fiszki_backend --rm -p 800:800 -v vol1:/fiszki_backend fiszki_backend
-# docker run -d --name mongo --rm -p 80:800 -v vol1:/fiszki_backend mongo
+# docker run -d --name mongo --rm -p 80:800 -v vol1:/data/db mongo
 #
 # testing:
 # docker exec -it fiszki_backend bash
