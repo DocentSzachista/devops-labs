@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fiszki-backend-nodeport
+  namespace: fiszkilab2
+spec:
+  selector:
+    app: fiszki-backend
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+      nodePort: 30080

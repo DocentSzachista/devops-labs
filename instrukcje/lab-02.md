@@ -141,7 +141,7 @@ kubectl describe nginx
 Usuwamy zasób z kubernetesa. Potrzebujemy wiedzieć jego typ i nazwę, możemy też podać różne opcje
 
 ```
-kubernetes delete <typ_zasobu> <nazwa_zasobu> <flagi>
+kubectl delete <typ_zasobu> <nazwa_zasobu> <flagi>
 ```
 
 #### Flagi 
@@ -300,7 +300,7 @@ kubectl expose deployment nginx-deployment --port=80 --type=LoadBalancer
 ```
 (Aby sprawdzić czy faktycznie udostępniliście porty można użyć chociażby komendy `minikube service --all`)
 
-- Nie jest to obowiązkowe ale na koniec możecie usunąć ten deployment komendą `kubectl remove deployment nginx-deployment`
+- Nie jest to obowiązkowe ale na koniec możecie usunąć ten deployment komendą `kubectl delete deployment nginx-deployment`
 
 ### Stworzenie własnego deploymentu aplikacji 
 - Do zadania można podejść od zarówno od strony komend jak i pisania samemu yamli. Przykładowe wzorce do napisania własnych plików yamlowych znajdziecie na stronie [dokumentacji](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) wpisując w wyszukiwanie nazwę zasobu który chcecie stworzyć
