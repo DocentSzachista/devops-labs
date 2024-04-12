@@ -9,6 +9,9 @@ Kubernetes jest otwartoźródłowym systemem służącym do automatyzacji wdraż
 </p>
 <p style="text-align:justify">    
 Pody są podstawowymi jednostkami w Kubernetesie, które reprezentują procesy działające na klastrze. Pod to grupa jednego lub wielu kontenerów, które są współlokowane na tym samym hoście i mogą współdzielić zasoby, takie jak sieć i przestrzeń dyskowa. Kontenery w ramach tego samego Poda są zawsze planowane razem na tym samym węźle i działają w tej samej lokalnej sieci, co pozwala im komunikować się między sobą za pomocą localhost.
+
+![](./images/pod_container_service.jpg)
+
 </p>
 
 ## Przykłady zasobów w yaml'u
@@ -64,7 +67,11 @@ spec:
         - containerPort: 80
 
 ```
+
+<p style="text-align:justify">    
 Są to zasoby które mają monitorować czy stan jaki zdefiniowaliśmy jest osiągnięty (Na przykład czy nasz backend żyje, udostępnia odpowiednie porty, ma przekazane odpowiednie zmienne) A jeżeli chodzi o opis powyższego zasobu:
+
+</p>
 
 - `kind`: Określa typ obiektu Kubernetes. Tutaj jest to `Deployment`, co oznacza, że definiuje się zasady dla wdrożenia aplikacji.
 - `metadata`: Metadane obiektu, takie jak nazwa, przestrzeń nazw, etykiety. 
@@ -250,11 +257,15 @@ Kroki jakie trzeba podjąć.
 ## Zadania
 
 ### Komentarz: 
+<p style="text-align:justify">    
+
 W przypadku robienia zadania **tylko** na 3.0 oprócz prezentacji chciałbym pdf'a ze screenami z jedno-zdaniowymi komentarzami co widać na screenie.
 
 Jeżeli macie ambicje chociaż na 3.5 to zadanie z 3.0 nadal chciałbym abyście wykonali, lecz nie wymagam otrzymania z niego pdf'a. Jako podkładkę pod ocenę wtedy chcę jedynie pliki yaml'owe które wygenerujecie w trakcie pracy. 
 
 Dla osób które zdecydują się pisać wszystko poprzez `kubectl create`: Aby stworzyło wam zasób oraz wygenerowało yaml'a wystarczy że dodacie flagę `-o` tak jak wspomniano [tutaj](#tworzenie-zasobów-w-kubernetesie)
+
+</p>
 
 ### 3.0 - Hello world w Kubernetesie czyli ćwiczenie podstawowych komend. 
 Zadanie na minimum to jest zapoznanie się z podstawowymi komendami z kubectl'a.
@@ -334,9 +345,10 @@ Podpowiedzi:
 
 ## Przydatne linki podczas pracy w laboratorium.
 
-- Dokumentacja kubernetesa zawiera przykłady do każdego z zadań dla oceny 3.0<. [Link](https://kubernetes.io/docs/home/)
+- Dokumentacja kubernetesa zawiera przykłady zasobów do każdego z zadań dla oceny 3.0<. [Link](https://kubernetes.io/docs/home/)
 
 
 ## Dodatkowe materiały dla poszerzenia wiedzy
 - Ładne porównanie typów [serwisów](https://kodekloud.com/blog/clusterip-nodeport-loadbalancer/)
 - Wyjaśnienie kontrolerów i ich różnic [link](https://semaphoreci.com/blog/replicaset-statefulset-daemonset-deployments)
+- ogólnie fajny kanał do nauki [Kubernetesa](https://www.youtube.com/@TechWorldwithNana) 
