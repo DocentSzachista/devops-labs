@@ -25,7 +25,7 @@ Repozytorium trzymające instrukcje do zajęć laboratoryjnych jakie prowadzę n
 |---|---|
 |1.| Podstawy konteneryzacji - Docker i Docker compose 
 |2.| Podstawy Kubernetesa
-|3.| | 
+|3.| O storage'u słów kilka(dziesiąt)| 
 |4.|
 |5.| Helm charts, czyli automatyzacja deploymentu aplikacji.
 |6.| 
