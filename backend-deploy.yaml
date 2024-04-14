@@ -1,0 +1,82 @@
+#3.0
+# First yaml document (Deployment)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: praca-laby
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: fiszki-backend
+        image: image.tar
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+        env: 
+          - name: MONGODB_HOST
+            value: 10.106.91.148 # lepsza opcja ze względu na niezmieniajacy port: mongodb-service
+
+# kubectl apply -f backend-depoly.yaml
+# kubectl get deployment
+# kubectl get pods
+# kubectl describe deployment backend-deployment
+# kubectl delete deployments --all
+
+---
+#3.5
+# Second yaml document (Service)
+apiVersion: v1
+kind: Service
+metadata: 
+  name: backend-service
+spec:
+  type: NodePort
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 30001
+
+# kubectl apply -f backend-deploy.yaml
+# minikube service backend-service
+# kubectl delete deployments --all
+# kubectl delete service backend-service
+# kubectl get services
+
+#4.0
+# kubectl create namespace praca-laby
+# kubectl get namespaces
+# kubectl config set-context --current --namespace=praca-laby
+# kubectl config current-context 
+# kubectl delete namespace lab
+# kubectl config set-context --current --namespace=default
+
+#5.0
+# kubectl create namespace praca-laby
+# kubectl get namespaces
+# kubectl config set-context --current --namespace=praca-laby
+# kubectl apply -f mongo-deploy.yaml
+# kubectl get svc mongo-service
+# CLUSTER-IP -> <mongo ip>
+# UWAGA:
+# Image stworzony z: https://stackoverflow.com/questions/58916308/kubernetes-deploy-with-tar-docker-image
+# Acces Granting: WORD
+# kubectl apply -f backend-deploy.yaml
+# kubectl delete namespace praca-laby
+# kubectl config set-context --current --namespace=default
