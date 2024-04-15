@@ -1,0 +1,41 @@
+259005 Mateusz Sabuk
+
+# 3.0
+## Build
+docker build --tag fiszki_backend .
+
+
+# 3.5
+## Uruchomienie z otwartym portem 8000
+docker run -p8000:8000 -d fiszki_backend:latest
+
+
+# 4.0
+## Utworzenie sieci i podłączenie do niej kontenerów
+docker network create backend
+
+## Uruchomienie mongodb
+docker run --network=backend --name db -d mongo
+
+## Uruchomienie fiszki_backend ze zmienną do bazy danych
+docker run -p8000:8000 --network=backend -e DATABASE_URL=mongodb://db:27017 --name fiszki_backend -d fiszki_backend:latest
+
+
+# 4.5
+## Utworzenie wolumenu
+docker volume create mongodb_data
+
+## Utworzenie kontenera mongodb ze stałym wolumenem
+docker run --network=backend -v /home/mati/Documents/mongo_data:/data/db --name db -d mongo
+docker exec -it db bash
+
+## Zapisanie danych
+root@9c26e3d59231:/# echo "Dane testowe" > /data/db/plik_testowy.txt
+root@9c26e3d59231:/# exit
+
+## Usunięcie i powtórne utworzenie kontenera
+docker rm -f db
+docker run --network=backend -v /home/mati/Documents/mongo_data:/data/db --name db -d mongo
+docker exec -it db bash
+root@ef6513b4139a:/# cat /data/db/plik_testowy.txt 
+Dane testowe
