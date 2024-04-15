@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  namespace: fiszkilab2
+  labels:
+    app: fiszki-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fiszki-db
+  template:
+    metadata:
+      labels:
+        app: fiszki-db
+    spec:
+      containers:
+      - name: fiszki-db
+        image: mongo:4.4.6
+        ports:
+        - containerPort: 27017
+          name: db-port

@@ -6,7 +6,7 @@ metadata:
   labels:
     app: fiszki-backend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: fiszki-backend
@@ -22,3 +22,6 @@ spec:
         ports:
         - containerPort: 8000
           name: backend-port
+        env:
+        - name: DATABASE_URL
+          value: "mongodb://fiszki-db-clusterip:27017"

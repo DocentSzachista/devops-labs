@@ -1,14 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: fiszki-backend-nodeport
+  name: fiszki-db-clusterip
   namespace: fiszkilab2
 spec:
   selector:
-    app: fiszki-backend
-  type: NodePort
+    app: fiszki-db
+  type: ClusterIP
   ports:
     - protocol: TCP
       port: 27017
-      targetPort: backend-port
-      nodePort: 30080
+      targetPort: db-port

@@ -15,6 +15,10 @@ tunel SSH między hostem (tutaj ubuntu na VM) a minikubowym klastrem z włączon
 > minikube service fiszki-backend-nodeport --url -n fiszkilab2
 > ssh -i ~/.minikube/machines/minikube/id_rsa docker@$(minikube ip) -L 30080:0.0.0.0:30080
 
+### UPDATE
+lepiej działa to:
+> kubectl port-forward deployment/backend-deployment 30080:8000
+
 wtedy możemy uzyskać dostęp z poziomu hosta do usług po localhoście, ale dalej nie mamy dostępu do nich
 z maszyny zdalnej. Żeby zaczęło działać trzeba zrobić kolejne forwardowanie, tym razem między hostem (serwerem)
 a lokalną maszyną. Tutaj zrobił to dla mnie VS Code ale ręcznie też można.
