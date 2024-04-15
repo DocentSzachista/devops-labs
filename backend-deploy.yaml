@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
       - name: fiszki-backend
-        image: image.tar
+        image: backend-image:latest
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "128Mi"
@@ -54,7 +55,7 @@ spec:
       nodePort: 30001
 
 # kubectl apply -f backend-deploy.yaml
-# minikube service backend-service
+# minikube service --namespace praca-laby backend-service
 # kubectl delete deployments --all
 # kubectl delete service backend-service
 # kubectl get services
@@ -74,9 +75,11 @@ spec:
 # kubectl apply -f mongo-deploy.yaml
 # kubectl get svc mongo-service
 # CLUSTER-IP -> <mongo ip>
-# UWAGA:
+# UWAGA: metoda 1 (NIEPOLECANA MAŁA STABILNOŚĆ)
 # Image stworzony z: https://stackoverflow.com/questions/58916308/kubernetes-deploy-with-tar-docker-image
 # Acces Granting: WORD
 # kubectl apply -f backend-deploy.yaml
 # kubectl delete namespace praca-laby
 # kubectl config set-context --current --namespace=default
+# UWAGA: metoda 2
+# https://stackoverflow.com/questions/72435932/kubernetes-doesnt-recognises-local-docker-image
