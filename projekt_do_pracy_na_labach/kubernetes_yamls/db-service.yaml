@@ -11,3 +11,18 @@ spec:
     - protocol: TCP
       targetPort: db-port
       port: 27017
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: db-service
+#   namespace: apka
+#   labels:
+#     app: db
+# spec:
+#   ports:
+#   - port: 27017
+#     name: db-port
+#   clusterIP: None
+#   selector:
+#     app: db

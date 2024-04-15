@@ -1,0 +1,10 @@
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: backend-configmap
+#   namespace: apka
+# data:
+#   logging: INFO DEBUG
+  # env: 
+  #         - name: DATABASE_URL
+  #           value: "mongodb://db-service:27017"
