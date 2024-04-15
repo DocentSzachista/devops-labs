@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: apka
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: fiszki_backend:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8000
+            name: backend-port
+          env: 
+          - name: DATABASE_URL
+            value: "mongodb://db-service:27017"
+
+#minikube start
+#kubectl get namespaces
+#kubectl config set-context --current --namespace=apka
+#eval $(minikube docker-env)
+#docker build -t fiszki_backend:latest fiszki_backend/
+#kubectl apply -f kubernetes_yamls/

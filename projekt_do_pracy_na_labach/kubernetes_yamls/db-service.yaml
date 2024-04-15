@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+  namespace: apka
+spec:
+  type: ClusterIP
+  selector:
+    app: db
+  ports:
+    - protocol: TCP
+      targetPort: db-port
+      port: 27017
