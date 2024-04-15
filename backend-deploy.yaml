@@ -55,6 +55,7 @@ spec:
       nodePort: 30001
 
 # kubectl apply -f backend-deploy.yaml
+#gdy projekt tworzony na namespace a nie default to trzeba dodać --namespace, gdyż minikube nie wie gdzie pracujemy
 # minikube service --namespace praca-laby backend-service
 # kubectl delete deployments --all
 # kubectl delete service backend-service
@@ -65,7 +66,7 @@ spec:
 # kubectl get namespaces
 # kubectl config set-context --current --namespace=praca-laby
 # kubectl config current-context 
-# kubectl delete namespace lab
+# kubectl delete namespace praca-laby
 # kubectl config set-context --current --namespace=default
 
 #5.0
