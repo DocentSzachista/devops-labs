@@ -25,7 +25,7 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: MONGODB_HOST
+            - name: DATABASE_URL
               value: 10.97.216.177
 
 # Service inside Deployment file
@@ -59,7 +59,7 @@ spec:
 ## Applying the backend service configuration to the Kubernetes cluster
 # kubectl apply -f backend-service.yaml
 ## Accessing the backend service via Minikube
-# minikube service backend-service
+# minikube service -n lab backend-service
 ## Deleting all deployments
 # kubectl delete deployments --all
 ## Deleting backend-service
