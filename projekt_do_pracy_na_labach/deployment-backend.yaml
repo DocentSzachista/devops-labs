@@ -16,5 +16,6 @@ spec:
       containers:
       - name: backend
         image: krycyg/repozytorium:fiszki_backend
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000

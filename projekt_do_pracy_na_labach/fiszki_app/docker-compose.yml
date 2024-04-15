@@ -3,33 +3,24 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./fiszki_backend
+      context: C:\Users\kryCyg\Documents\docker\devops-labs\projekt_do_pracy_na_labach\
     ports:
       - "8000:8000"
     depends_on:
       - db
-    networks:
-      - app-network
     environment:
       DATABASE_URL: "mongodb://db:27017"
 
   frontend:
     build:
-      context: ./fiszki_app
+      context: C:\Users\kryCyg\Documents\docker\devops-labs\projekt_do_pracy_na_labach\fiszki_app
     ports:
       - "8000:8000"
-    networks:
-      - app-network
 
   db:
     image: mongo
     volumes:
       - mongo_data:/data/db
-    networks:
-      - app-network
 
 volumes:
   mongo_data:
-
-networks:
-  app-network:

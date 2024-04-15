@@ -1,32 +1,34 @@
-Komendy użyte w trakcie zajęć.
+3.0
+# Zbudowanie obrazu Docker dla aplikacji backendowej
+docker build -t krycyg/repozytorium:fiszki_backend .
 
-Punkt 3.0 - Hello world w Dockerfile
+# Zatagowanie obrazu
+docker tag krycyg/repozytorium:fiszki_backend krycyg/repozytorium:fiszki_backend
 
-docker build --tag fiszki_backend .
+# Wysłanie obrazu do rejestru Docker Hub
+docker push krycyg/repozytorium:fiszki_backend
 
-Punkt 3.5 - Otworzyć aplikację na świat
 
-docker run -d --name fiszki1_container -p 8000:8000 fiszki_backend
+3.5
+# Stworzenie Deploymentu
+kubectl apply -f deployment-backend.yaml
 
-Punkt 4.0 - Połączyć aplikację back-endową z bazą danych
+# Stworzenie Serwisu
+kubectl apply -f service-backend.yaml
 
-Pobranie obrazu MongoDB z repozytorium Docker:
+4.0
+# Stworzenie nowego namespace'a
+kubectl create namespace namespace2
 
-docker network create network1
+# Ustawienie kontekstu na nowo utworzony namespace
+kubectl config set-context --current --namespace=namespace2
 
-docker run -d --name fiszki_backend --network network1 -e DATABASE_URL=mongodb://mongo_container:27017 fiszki_backend:1.0
+5.0
+# Stworzenie Deploymentu dla bazy danych MongoDB
+kubectl apply -f deployment-mongodb.yaml
 
-docker run -d --name mongo_container --network network1 mongo
+# Stworzenie Serwisu dla bazy danych MongoDB
+kubectl apply -f service-mongodb.yaml
 
-Punkt 4.5 - Dodanie wolumenów do Dockerfile'a z bazą danych
-
-docker volume create moj_wolumen
-
-docker run -d --name mongo_container -v moj_wolumen:/data/db mongo
-
-Punkt 5.0 - Docker-compose
-Stworzenie pliku docker-compose.yml:
-
-touch docker-compose.yml
-
-docker-compose up -d
+# Modyfikacja Deploymentu backendu
+kubectl apply -f deployment-backend.yaml
