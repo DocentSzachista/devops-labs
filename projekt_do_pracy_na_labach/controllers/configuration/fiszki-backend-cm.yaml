@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fiszki-backend-cm
+data:
+  databaseUrl: "mongodb://fiszki-db:27017"
+  logging: "DEBUG"

@@ -1,7 +1,9 @@
 import logging 
 
 def set_logging():
-    handler = logging.FileHandler('myapp.log')
+    # changed logging destination to /log/ subdirectory for
+    # easier persistent volume mounting
+    handler = logging.FileHandler('log/myapp.log')
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
     logger = logging.getLogger(__name__)

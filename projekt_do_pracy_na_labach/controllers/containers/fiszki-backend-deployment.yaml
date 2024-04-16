@@ -24,4 +24,19 @@ spec:
           name: backend-port
         env:
         - name: DATABASE_URL
-          value: "mongodb://fiszki-db-clusterip:27017"
+          valueFrom:
+            configMapKeyRef:
+              name: fiszki-backend-cm
+              key: databaseUrl
+        - name: logging
+          valueFrom:
+            configMapKeyRef:
+              name: fiszki-backend-cm
+              key: logging
+        volumeMounts:
+        - mountPath: "/usr/app/log"
+          name: fiszki-backend-pv
+      volumes:
+      - name: fiszki-backend-pv
+        persistentVolumeClaim:
+          claimName: fiszki-backend-pvc
