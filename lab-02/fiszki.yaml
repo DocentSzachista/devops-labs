@@ -1,0 +1,78 @@
+# Backend deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-backend
+  namespace: fiszki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-service
+          image: fiszki_backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "mongodb://mongodb:27017"
+
+---
+# Database deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-db
+  namespace: fiszki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+
+---
+# Access to backend from the browser
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: fiszki
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      nodePort: 30001
+  type: LoadBalancer
+
+---
+# Access from backend to the db
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: fiszki
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
