@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-service
+        image: backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+
+#Komendy do zadania na 3.5
+#kubectl apply -f backend_deployments.yaml
+#kubectl apply -f backend_service.yaml
+#minikube service backend-service
+#kubectl delete deployments --all
+#kubectl delete services backend-service
+
+#Komendy do zadania na 4.0
+#kubectl create namespace app-namespace
+#kubectl config set-context --current --namespace=app-namespace
+#kubectl apply -f backend_deployments.yaml
+#kubectl apply -f backend_service.yaml
+#minikube service backend-service -n app-namespace
