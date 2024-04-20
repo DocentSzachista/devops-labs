@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: fiszkibackend
+spec:
+  selector:
+    app: backend
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80          # Numer portu, na którym dostępna będzie aplikacja na serwerze
+      targetPort: 8000  # Numer portu, na którym aplikacja działa wewnątrz kontenera
+      nodePort: 30080   # Dowolny numer portu, który jest dostępny (powyżej 30000)
