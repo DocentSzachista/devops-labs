@@ -1,0 +1,16 @@
+do stworzenia deploymentów i serwisów:
+- kubectl create -f backend_deploy.yaml 
+- kubectl create -f backend_service.yaml 
+- kubectl create -f db_deploy.yaml 
+- kubectl create -f db_service.yaml 
+
+do sprawdzenia i uzyskania informacji:
+- kubectl get deployments -n=app-namespace
+- kubectl get services -n=app-namespace
+
+do ewentualnego usuwania:
+- kubectl delete service backend-service -n=app-namespace
+
+można wejść z poziomu przegladarki po zastosowaniu triku, o którym wspominał jeden z kolegów na zajęciach:
+- kubectl port-forward deployment/backend-deployment 30005:8000 -n=app-namespace
+wtedy w przegladarce: http://localhost:30005
