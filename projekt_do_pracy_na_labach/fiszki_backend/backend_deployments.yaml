@@ -15,11 +15,14 @@ spec:
         app: backend
     spec:
       containers:
-      - name: backend-service
-        image: backend:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8000
+        - name: backend
+          image: backend:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8000
+          env: 
+          - name: DATABASE_URL
+            value: "mongodb://db-service:27017"
 
 #Komendy do zadania na 3.5
 #kubectl apply -f backend_deployments.yaml
@@ -33,4 +36,12 @@ spec:
 #kubectl config set-context --current --namespace=app-namespace
 #kubectl apply -f backend_deployments.yaml
 #kubectl apply -f backend_service.yaml
+#minikube service backend-service -n app-namespace
+
+#Komendy do zadania na 5.0
+#kubectl create namespace app-namespace
+#kubectl config set-context --current --namespace=app-namespace
+#kubectl apply -f .
+#kubectl get deployments
+#kubectl get services
 #minikube service backend-service -n app-namespace
