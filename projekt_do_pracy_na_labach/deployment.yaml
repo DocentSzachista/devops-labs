@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: lab2
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-service
+        image: backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          name: backend-port
+        env: 
+          - name: DATABASE_URL
+            value: "mongodb://db-service:27017"
+
+# minikube start
+# kubectl create namespace lab2
+# kubectl apply -f ./
+# minikube service my-service -n lab2
