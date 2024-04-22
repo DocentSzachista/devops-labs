@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-deployment
+  namespace: lab
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+      - name: backend-service
+        image: fiszki-backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+
+##apiVersion: v1
+##kind: Service
+##metadata:
+##  name: backend-service
+##spec:
+##  selector:
+##    app: backend
+##  type: NodePort
+##  ports:
+##    - protocol: TCP
+##      port: 80  
+##      targetPort: 8000  
+##      nodePort: 30000 
+
+#Bartosz Habas
+
+#kubectl apply -f backend.yaml
+#kubectl get deployments
+#kubectl get pods
+#kubectl describe deployment example-deployment
+#kubectl delete deployment example-deployment
+
+#kubect apply -f backend-service.yaml
+#minikube service backend-servoce
+#kubect delete deployments --all
+
+#kubectl create namespace czw9
+#kubect config set-context --current --namespace=czw9
+#kubectl apply -f backend-service.yaml
+#kubectl delete namespace czw9
+#kubectl config set-context --current --namespace=default
