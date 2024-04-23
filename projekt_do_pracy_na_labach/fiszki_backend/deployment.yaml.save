@@ -1,0 +1,62 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2024-04-22T19:42:54Z"
+  generation: 1
+  labels:
+    app: backend-deployment
+  name: 
+  namespace: default
+  resourceVersion: "2197"
+  uid: cb253e68-4b12-4b6c-aa0e-dbe4394f796e
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: backend-deployment
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: backend-deployment
+    spec:
+      containers:
+      - image: backend:tag
+        imagePullPolicy: IfNotPresent
+        name: nazwa-backendu
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  conditions:
+  - lastTransitionTime: "2024-04-22T19:42:54Z"
+    lastUpdateTime: "2024-04-22T19:42:54Z"
+    message: Deployment does not have minimum availability.
+    reason: MinimumReplicasUnavailable
+    status: "False"
+    type: Available
+  - lastTransitionTime: "2024-04-22T19:52:55Z"
+    lastUpdateTime: "2024-04-22T19:52:55Z"
+    message: ReplicaSet "backend-deployment-944756498" has timed out progressing.
+    reason: ProgressDeadlineExceeded
+    status: "False"
+    type: Progressing
+  observedGeneration: 1
+  replicas: 1
+  unavailableReplicas: 1
+  updatedReplicas: 1
