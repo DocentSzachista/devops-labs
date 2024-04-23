@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2024-04-20T18:31:09Z"
+  labels:
+    app: nginx-deployment
+  name: nginx-deployment
+  namespace: default
+  resourceVersion: "5283"
+  uid: 871b5f40-b981-4eae-ace7-399917e8e820
+spec:
+  allocateLoadBalancerNodePorts: true
+  clusterIP: 10.107.19.255
+  clusterIPs:
+  - 10.107.19.255
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 31926
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx-deployment
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}
