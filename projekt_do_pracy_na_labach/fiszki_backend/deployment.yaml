@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
+  namespace: lab2
   labels:
     app: backend
 spec:
@@ -21,3 +22,6 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 80
+        env:
+          - name: DATABASE_URL
+            value: "mongodb://10.106.122.32:27017"
