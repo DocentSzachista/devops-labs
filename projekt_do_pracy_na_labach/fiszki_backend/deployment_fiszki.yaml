@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: apka
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: fiszkibackend
+        image: fiszki_backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+
+# Wersja na 4.0:
+
+# eval $(minikube docker-env)
+# minikube start
+
+# kubectl create namespace apka
+# kubectl create -f deployment_fiszki.yaml
+# kubectl create -f deployment_service.yaml
+
+# można podejrzeć np przy pomocy:
+# kubectl get pods
+# kubectl get deployments --namespace apka 
+# dzięki nim widzę że mój deployment jest ready, up to date i available
+# a dzięki poniższej komendzie dostanę URL dzięki któremu mogę podejrzeć mój service:
+# minikube service my-service --url -n apka
