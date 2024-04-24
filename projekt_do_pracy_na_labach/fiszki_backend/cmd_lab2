@@ -1,6 +1,0 @@
-eval $(minikube dockeer-env)
-minikube start
-docker build --tag fiszki_backend .
-docker run -p 8000:8000 --name fiszki_backend fiszki_backend
-
-kubectl create namespace apka
