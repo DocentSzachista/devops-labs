@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: apka
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: laby2
+        image: laby:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+
+#Na ocene 4.0
+#Aby zadziałało musiałem jeszcze raz stworzyć obraz dockera (za 3 razem zadziało), przy włącząnym już minikube.
+#minikube start 
+#minikube docker-env | Invoke-Expression
+#minikube stop
+#minikube start
+#minikube dashboard
+#minikube image ls
+#docker build -t laby .
+#docker run -d -v laby_volume:/app --name laby2 -p 8000:8000 laby:latest
+#Po zrobieniu wcześniejszych kroków mogłem mogłem zacząć pracowac w kubernetessie
+#kubectl create namespace apka   #tworzenie namespacu
+#kubectl config set-context --current --namespace=apka #zmiana kontekstu na stworzoną wcześniej apka
+#kubectl create -f test.yaml     #tworzenie deploymentu
+#kubectl create -f testservis.yaml      #tworzenie serwisu
+#kubectl get pods     
+#kubectl get deployments --namespace apka
+#kubectl describe pod 
+#minikube service backend-service --url -n apka #samo minikube servie nie działa, bo wyskakuje błąd mówiący o problemie komuniakcji minikube z docker CLI
+#Po tym wszystkim można uruchomić poprzez przeglądarke o takim adresie: http://127.0.0.1:57188
+#Na końcu postanowiłem usunąć stworzony serwis i deployment:
+#kubectl delete service backend-service  
+#kubectl delete deployment backend-deployment
