@@ -35,5 +35,31 @@ spec:
 
 #kubectl delete service backend-service
 
-# laby2
+# lab3 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: backend-image
+          volumeMounts:
+            - name: backend-data
+              mountPath: /app/logs 
+      volumes:
+        - name: backend-data
+          persistentVolumeClaim:
+            claimName: pvc_backend
+
 
