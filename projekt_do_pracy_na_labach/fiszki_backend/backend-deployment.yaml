@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
-  namespace: laby21
+  namespace: lab31
 spec:
   replicas: 2
   selector:
@@ -19,6 +19,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
+          volumeMounts:
+            - name: data-volume    
+              mountPath: /app
+      volumes:
+        - name: backend-volume
+          persistentVolumeClaim:
+            claimName: task-pv-claim
 
 # kubectl apply -f backend-deployment.yaml
 # kubectl get deployments
