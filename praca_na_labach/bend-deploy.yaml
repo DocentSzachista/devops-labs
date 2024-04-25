@@ -16,7 +16,7 @@ spec:
         app: backend
     spec:
       containers:
-      - name: fiszki_bend
+      - name: fiszki-bend
         image: fiszki_bend:latest
         imagePullPolicy: IfNotPresent
         ports:

@@ -5,12 +5,6 @@ from routers.collections import router
 import uvicorn
 from logger import LOGGER
 
-
-
-
-
-
-
 app = FastAPI(
     title="Devops labs api"
 )

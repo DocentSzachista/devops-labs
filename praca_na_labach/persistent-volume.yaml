@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv_backend
+  labels:
+    type: local
+spec:
+  claimRef:
+    namespace: default
+    name: log-volume-claim
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /data/pv_backend/
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: log-volume-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
