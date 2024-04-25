@@ -20,4 +20,4 @@ spec:
         image: fiszli_backend:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 80
+        - containerPort: 8000
