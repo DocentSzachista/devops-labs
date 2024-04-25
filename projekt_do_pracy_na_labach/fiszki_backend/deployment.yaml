@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: apka
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: laby2  
+        image: kube:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+
+
+#3.0 
+#kubectl create deployment nginx-deployment --image=nginx
+#kubectl get pods
+#kubectl scale deployment nginx-deployment --replicas=3 
+#kubectl expose deployment nginx-deployment --port=80 --type=LoadBalancer 
+#kubectl remove deployment nginx-deployment
+
+#3.5 i 4.0
+#minikube start 
+#minikube docker-env | Invoke-Expression
+#minikube dashboard - pokazanie dashboardu
+
+
+#minikube image ls -sprawdzenie obrazu
+
+#stworzenie obrazu i kontenera
+#docker build -t kube:v1 .
+#docker run -d --name laby2 -p 8000:8000 kube:v1
+
+#stworzenie namespace
+#kubectl create namespace apka   
+#ustawienie kontekstu namespace
+#kubectl config set-context --current --namespace=apka 
+#stworzenie deploymentu
+#kubectl create -f deployment.yaml     
+#stworzenie serwisu
+#kubectl create -f test.yaml    
+
+#kubectl get pods 
+#długo nie działało, caly czas był errpullImage oraz wyskakiwało:
+#Unable to resolve the current Docker CLI context "default": context "default": context not found: open C:\Users\tomas\.docker\contexts\meta\37a8eec1ce19687d132fe29051dca629d164e2c4958ba141d5f4133a33f0688f\meta.json: The system cannot find the path specified.
+#ostatecznie rozwiazałem to komendami: 
+#minikube config set driver docker
+#minikube delete
+#minikube start --driver=docker
+#link do stack overflow https://stackoverflow.com/questions/69212190/cannot-start-minikube-in-windows-10-with-docker-as-driver
+#dzieki temu zaczeło tez normalnie działac minikube docker-env | Invoke-Expression
+#wczesniej nie działało rowniez minikube image ls, po tym normalnie pokazywało moj obraz w bazie obrazow
+
+
+
+#kubectl get deployments --namespace apka - pokazanie deploymentów z naszego namespace
+#kubectl describe pod -opis podów
+#minikube service backend-service --url -n apka - dzieki temu mozna dostać sie na apke poprzez  http://127.0.0.1:57188
+
+
+#mozna usunać poprzez:
+#kubectl delete service backend-service  
+#kubectl delete deployment backend-deployment
