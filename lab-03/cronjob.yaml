@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-job
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: backup-job
+              image: mongo:latest
+              imagePullPolicy: IfNotPresent
+              command: [
+                  "sh",
+                  "-c",
+                  "mongodump --host mongodb://mongo-db-sv:27017 mongo-db-sv --db fiszki --out /backup/$(date +%Y-%m-%d_%H-%M-%S)
+                  ls /backup && ls /",
+                ]
+          restartPolicy: OnFailure
