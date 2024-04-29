@@ -1,11 +1,8 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
   namespace: lab2
-  labels:
-    app: backend
 spec:
   replicas: 1
   selector:
@@ -23,5 +20,13 @@ spec:
         ports:
         - containerPort: 80
         env:
-          - name: DATABASE_URL
-            value: "mongodb://10.106.122.32:27017"
+        - name: DATABASE_URL
+          value: "mongodb://10.106.122.32:27017"
+        volumeMounts:
+        - name: backend-logs
+          mountPath: /path/to/logs
+      volumes:
+      - name: backend-logs
+        persistentVolumeClaim:
+          claimName: pvc-backend
+
