@@ -25,8 +25,27 @@ spec:
           ports:
             - containerPort: 8000
           env:
-            - name: DATABASE_URL
+            - name: MONGODB_HOST
               value: 10.97.216.177
+            - name: logging
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-cm
+                  key: logging
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-cm
+                  key: DATABASE_URL
+          volumeMounts: # added volume to deployment
+          - name: pv-backend
+            mountPath: /data/pv-backend/
+            readOnly: true
+      volumes:
+        - name: pv-backend
+          persistentVolumeClaim:
+            claimName: pv-backend
+        
 
 # Service inside Deployment file
 ---
@@ -42,57 +61,51 @@ spec:
     - protocol: TCP
       port: 80  
       targetPort: 8000  
-      nodePort: 30000 
+      nodePort: 30000
 
 ### Commands
 ## 3.0
-## Deploying the backend deployment to Kubernetes cluster
-# kubectl apply -f backend-deployment.yaml
-## Getting information about deployments
-# kubectl get deployments
-## Getting information about pods
-# kubectl get pods
-## Describing the backend deployment
-# kubectl describe deployment backend-deployment
+## Creating a new namespace called "lab"
+# kubectl create namespace lab
+## Setting the current context to use the "lab" namespace
+# kubectl config set-context --current --namespace=lab
+## Applying configuration from pv-backend.yaml file
+# kubectl apply -f .\pv-backend.yaml
+## Getting Persistent Volumes (PVs)
+# kubectl get pv
 
 ## 3.5
-## Applying the backend service configuration to the Kubernetes cluster
-# kubectl apply -f backend-service.yaml
-## Accessing the backend service via Minikube
-# minikube service -n lab backend-service
-## Deleting all deployments
-# kubectl delete deployments --all
-## Deleting backend-service
-# kubectl delete service backend-service
-## List all services
-# kubectl get services
+## Applying configuration from pvc-backend.yaml file
+# kubectl apply -f .\pvc-backend.yaml
+## Getting Persistent Volume Claims (PVCs) in the "lab" namespace
+# kubectl get pvc -n lab  
 
 ## 4.0
-## Creating a new namespace called "lab"
-# kubectl create namespace lab
-## List all namespaces
-# kubectl get namespaces
-## Setting the current context to use the "lab" namespace
-# kubectl config set-context --current --namespace=lab
-## Applying the backend service configuration to the Kubernetes cluster
-# kubectl apply -f backend-service.yaml
-## Deleting namespace (all deployments, services, pods within that)
-# kubectl delete namespace lab
-## Setting the current context to use the default namespace
-# kubectl config set-context --current --namespace=default
+## Applying configuration from mongo-ss.yaml file
+# kubectl apply -f .\mongo-ss.yaml
+## Getting Pods
+# kubectl get pod
+## Getting Services
+# kubectl get services
+## Getting Persistent Volumes (PVs)
+# kubectl get pv 
 
-## 5.0 
-## Creating a new namespace called "lab"
-# kubectl create namespace lab
-## Setting the current context to use the "lab" namespace
-# kubectl config set-context --current --namespace=lab
-## Deploying MongoDB deployment to Kubernetes cluster
-# kubectl apply -f mongo-deployment.yaml
-## Getting information about MongoDB service
-# kubectl get svc mongo-service
-## Deploying the backend deployment to Kubernetes cluster
-# kubectl apply -f backend-deployment.yaml
-## Getting all resources in the "lab" namespace
-# kubectl get all -n lab
+## 4.5
 ## Deleting all resources in the "lab" namespace
 # kubectl delete all --all -n lab
+## Applying configuration from backend-cm.yaml file
+# kubectl apply -f .\backend-cm.yaml  
+## Applying configuration from pvc-backend.yaml file
+# kubectl apply -f .\pvc-backend.yaml
+## Applying configuration from pv-backend.yaml file
+# kubectl apply -f .\pv-backend.yaml 
+## Applying configuration from mongo-ss.yaml file
+# kubectl apply -f .\mongo-ss.yaml 
+## Getting all resources
+# kubectl get all
+
+## 5.0
+## Applying configuration from cronjob.yaml file
+# kubectl apply -f .\cronjob.yaml
+## Watching CronJobs
+# kubectl get cronjob --watch

@@ -1,0 +1,98 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-service
+          image: fiszki-backend:1.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: 10.97.216.177
+
+# Service inside Deployment file
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80  
+      targetPort: 8000  
+      nodePort: 30000 
+
+### Commands
+## 3.0
+## Deploying the backend deployment to Kubernetes cluster
+# kubectl apply -f backend-deployment.yaml
+## Getting information about deployments
+# kubectl get deployments
+## Getting information about pods
+# kubectl get pods
+## Describing the backend deployment
+# kubectl describe deployment backend-deployment
+
+## 3.5
+## Applying the backend service configuration to the Kubernetes cluster
+# kubectl apply -f backend-service.yaml
+## Accessing the backend service via Minikube
+# minikube service -n lab backend-service
+## Deleting all deployments
+# kubectl delete deployments --all
+## Deleting backend-service
+# kubectl delete service backend-service
+## List all services
+# kubectl get services
+
+## 4.0
+## Creating a new namespace called "lab"
+# kubectl create namespace lab
+## List all namespaces
+# kubectl get namespaces
+## Setting the current context to use the "lab" namespace
+# kubectl config set-context --current --namespace=lab
+## Applying the backend service configuration to the Kubernetes cluster
+# kubectl apply -f backend-service.yaml
+## Deleting namespace (all deployments, services, pods within that)
+# kubectl delete namespace lab
+## Setting the current context to use the default namespace
+# kubectl config set-context --current --namespace=default
+
+## 5.0 
+## Creating a new namespace called "lab"
+# kubectl create namespace lab
+## Setting the current context to use the "lab" namespace
+# kubectl config set-context --current --namespace=lab
+## Deploying MongoDB deployment to Kubernetes cluster
+# kubectl apply -f mongo-deployment.yaml
+## Getting information about MongoDB service
+# kubectl get svc mongo-service
+## Deploying the backend deployment to Kubernetes cluster
+# kubectl apply -f backend-deployment.yaml
+## Getting all resources in the "lab" namespace
+# kubectl get all -n lab
+## Deleting all resources in the "lab" namespace
+# kubectl delete all --all -n lab
