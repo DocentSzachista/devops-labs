@@ -20,8 +20,16 @@ spec:
         ports:
         - containerPort: 80
         env:
+        - name: logging
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: logging
         - name: DATABASE_URL
-          value: "mongodb://10.106.122.32:27017"
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: DATABASE_URL
         volumeMounts:
         - name: backend-logs
           mountPath: /path/to/logs
