@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: moj-namespace
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-container
+        image: nazwa1 
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: 500m   # Limit CPU na 500 milicore (0.5 CPU)
+            memory: 512Mi   # Limit pamięci na 512 megabajtów
+          requests:
+            cpu: 200m   # Żądanie CPU na 200 milicore (0.2 CPU)
+            memory: 256Mi   # Żądanie pamięci na 256 megabajtów
+        env:
+        - name: DATABASE_URL
+          value: "mongodb://10.100.43.23:27017"
