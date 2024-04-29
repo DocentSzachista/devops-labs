@@ -1,10 +1,8 @@
-#3.0
-# First yaml document (Deployment)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
-  namespace: praca-laby
+  namespace: lab3
   labels:
     app: backend
 spec:
@@ -19,6 +17,7 @@ spec:
     spec:
       containers:
       - name: fiszki-backend
+        # Image Pull Error https://www.groundcover.com/kubernetes-troubleshooting/imagepullbackoff
         image: backend-image:latest
         imagePullPolicy: IfNotPresent
         resources:
@@ -27,19 +26,45 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 8000
+        # mamy jeden claim więc starczy, w przypadku większej ilości nalezy użyc volumeMountTemplate:
+        volumeMounts:
+        - name: pv-backend
+          mountPath: /data/pv-backend/
+          readOnly: True
         env: 
+          # 
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: deployment-config
+                key: DATABASE_URL
+          - name: logging
+            valueFrom:
+              configMapKeyRef:
+                name: deployment-config
+                key: logging
+          # service
           - name: MONGODB_HOST
-            value: 10.106.91.148 # lepsza opcja ze względu na niezmieniajacy port: mongodb-service
-
-# kubectl apply -f backend-depoly.yaml
-# kubectl get deployment
-# kubectl get pods
-# kubectl describe deployment backend-deployment
-# kubectl delete deployments --all
-
+            valueFrom:
+              configMapKeyRef:
+                name: deployment-config
+                key: mongo-url
+          # secret
+          - name: USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: username
+          - name: USER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: password
+      volume:
+        - name: pv-backend
+          persistentVolumeClaim:
+            claimName: pvc-backend
 ---
-#3.5
-# Second yaml document (Service)
 apiVersion: v1
 kind: Service
 metadata: 
@@ -52,35 +77,83 @@ spec:
     - protocol: TCP
       port: 8000
       targetPort: 8000
-      nodePort: 30001
+      nodePort: 30100
 
-# kubectl apply -f backend-deploy.yaml
-#gdy projekt tworzony na namespace a nie default to trzeba dodać --namespace, gdyż minikube nie wie gdzie pracujemy
-# minikube service --namespace praca-laby backend-service
+## 3/3.5
+# kubectl create namespace 
+# minikube service --namespace lab3 backend-service
+# kubectl apply -f backend-pv.yaml
+# kubectl get pv
+# kubectl get pvc -n lab3
+# kubectl delete pv pv-backend
+# kubectl delete pvc pvc-backend -n lab3
+## komenda kubectl "delete all -n lab3 --all" nie usuwa 
+
+## 4
+# kubectl apply -f backend-pv.yaml
+# kubectl apply -f mongo-stf.yaml
+# kubectl get service 
+# kubectl get pod
+# kubectl get pv
+# kubectl get pvc -n lab3
+# kubectl delete pv pv-backend
+# kubectl delete pvc pvc-backend -n lab3
+# kubectl delete statefullsets mongo-db
+# kubectl delete service mongo-service
+
+## 4.5
+## tak wiem że w zadaniu nie ma secretu natomiast pozwala on na "bezpieczny" dostęp do bazy danych
+## krok pierwszy (configs/secrets)
+# kubectl apply -f deployment-config.yaml.yaml
+# kubectl apply -f mongo-secret.yaml
+## krok drugi (volumes)
+# kubectl apply backend-pv.yaml
+# kubectl apply mongo-stf.yaml
+## krok trzeci (deployments)
+# kubectl apply -f backend-depoly.yaml
+## interakcjie z kubectl
+# kubectl get all
+## na wyjściu pokazują się jedynie pod/svc/deploy dlatego aby sprawdzić pozostałe:
+# kubectl get configmap
+# kubectl get secret
+## fajna komenda
+# kubectl scale --replicas=5 statefulset mongo-db
+## czyszczenie
 # kubectl delete deployments --all
 # kubectl delete service backend-service
-# kubectl get services
+# kubectl delete pv pv-backend
+# kubectl delete pvc pvc-backend
+# kubectl delete statefullsets mongo-db
+# kubectl delete service mongo-service
 
-#4.0
-# kubectl create namespace praca-laby
-# kubectl get namespaces
-# kubectl config set-context --current --namespace=praca-laby
-# kubectl config current-context 
+## 5
+## krok pierwszy (configs/secrets)
+# kubectl apply -f deployment-config.yaml.yaml
+# kubectl apply -f mongo-secret.yaml
+## krok drugi (volumes)
+# kubectl apply backend-pv.yaml
+# kubectl apply mongo-stf.yaml
+## THIRD STEP (deployments)
+# kubectl apply -f backend-depoly.yaml
+## PODEJŚCIE PIERWSZE
+## przekierowanie portów (piewsze okno clt)
+# kubectl port-forward po/mongodb-0 27017
+## (drugie okno clt)
+# mongo -u user_name -p user_password --authenticationDatabase mongo-db
+# kubectl apply -f cronejob.yaml
+## sprawdzenie czy cronjob dziala z linku
+#https://phoenixnap.com/kb/kubernetes-cronjob
+# kubectl get cronjob --watch
+## PODEJŚCIE DRUGIE
+# kubectl apply -f cronejob.yaml
+# kubectl get cronjob --watch
+## czyszczenie
+# kubectl delete cronjob pvc-backend
+# kubectl delete deployments --all
+# kubectl delete service backend-service
+# kubectl delete pv pv-backend
+# kubectl delete pvc pvc-backend
+# kubectl delete statefullsets mongo-db
+# kubectl delete service mongo-service
 # kubectl delete namespace praca-laby
 # kubectl config set-context --current --namespace=default
-
-#5.0
-# kubectl create namespace praca-laby
-# kubectl get namespaces
-# kubectl config set-context --current --namespace=praca-laby
-# kubectl apply -f mongo-deploy.yaml
-# kubectl get svc mongo-service
-# CLUSTER-IP -> <mongo ip>
-# UWAGA: metoda 1 (NIEPOLECANA MAŁA STABILNOŚĆ)
-# Image stworzony z: https://stackoverflow.com/questions/58916308/kubernetes-deploy-with-tar-docker-image
-# Acces Granting: WORD
-# kubectl apply -f backend-deploy.yaml
-# kubectl delete namespace praca-laby
-# kubectl config set-context --current --namespace=default
-# UWAGA: metoda 2
-# https://stackoverflow.com/questions/72435932/kubernetes-doesnt-recognises-local-docker-image

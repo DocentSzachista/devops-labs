@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pvc-backend
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: pvc-backend
+            persistentVolumeClaim:
+              claimName: pvc-backend
+          restartPolicy: OnFailure
+          containers:
+            - name: mongo-db
+              image: mongo:latest
+              command : ["/bin/sh", "-c"]
+              #poprzez użycie secret musiałem dodać zmienne 
+              # https://medium.com/@shashwatmahar12/kubernetes-install-mongodb-from-helm-cron-job-to-backup-mongodb-replica-set-5fd8df51fe93
+              args: ["mongodump --uri \"mongodb://mongo-db-0.$(MONGODB_HOST).lab3/?replicaSet=rs0\" -u $(MONGODB_USERNAME) -p $(MONGODB_PASSWORD) --authenticationDatabase $(mongo-db) --out /backup/$(date +%Y-%m-%d_%H-%M-%S)"]
+              #komenda bez secret
+              #args: ["mongodump --uri \"mongodb://mongo-db.mongo-service.lab3/?replicaSet=rs0\" --db mongo-db --out /backup/$(date +%Y-%m-%d_%H-%M-%S)"]
+              #cała komenda jako jedność podana przez prowadzacego
+              #command: ["sh", "-c", "mongodump --host mongodb-service-0.mongodb-service --db mongo-db-0 --out /backup/$(date +%Y-%m-%d_%H-%M-%S)"]
+              env: 
+              # service
+              - name: MONGODB_HOST
+                valueFrom:
+                  configMapKeyRef:
+                    name: mongo-config
+                    key: mongo-url
+              # secret
+              - name: USER_NAME
+                valueFrom:
+                  secretKeyRef:
+                    name: mongo-secret
+                    key: username
+              - name: USER_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: mongo-secret
+                    key: password
+              volumeMounts:
+              - mountPath: "/backup/"
+                name: backup
