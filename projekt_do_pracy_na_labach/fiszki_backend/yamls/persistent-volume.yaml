@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv_backend # Ustawienie nazwy dla PersistentVolume
+  namespace: pv-yaml-lab3 # Ustawienie namespace'u do stworzenia volume'a
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Mi # Obniżenie ilości zapisywanej pamięci
+  hostPath:
+    path: /data/pv_backend/ # Ustawienie ścieżki zapisu danych na hoście
+  claimRef: # Zabezpieczenie wolumenu
+  - name: pv-claim-lab3 # Nazwa PersistentVolumeClaim
+    namespace: pv-yaml-lab3 # Lokalizacja PersistentVolumeClaim
