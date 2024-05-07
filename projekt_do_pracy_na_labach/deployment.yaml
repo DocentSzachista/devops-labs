@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: lab3
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-service
+        image: fiszki_backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+
+# kubectl create namespace lab3
+# kubectl create -f '.\projekt_do_pracy_na_labach\pliki yaml\deployment.yaml'
+# kubectl get deployment --namespace lab3
+# kubectl get pods --namespace lab3
+
+# kubectl apply -f '.\projekt_do_pracy_na_labach\pliki yaml\service.yaml'
+
+# kubectl delete deployments --all
+# kubectl create namespace lab3_1
+# kubectl config set-context --current --namespace=lab3_1
+
+# kubectl delete service bakcend-service
+
+
+# DO LABÓW NR 3
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: backend-image
+          volumeMounts:
+            - name: backend-data
+              mountPath: /app/logs 
+      volumes:
+        - name: backend-data
+          persistentVolumeClaim:
+            claimName: pv_backendc
