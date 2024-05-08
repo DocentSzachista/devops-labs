@@ -1,35 +1,11 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: db-deployment
-  namespace: apka
-  labels:
-    app: db
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: db
-  template:
-    metadata:
-      labels:
-        app: db
-    spec:
-      containers:
-        - name: db
-          image: mongo:latest
-          ports:
-          - containerPort: 27017
-            name: db-port
-
-
 # apiVersion: apps/v1
-# kind: StatefulSet
+# kind: Deployment
 # metadata:
-#   name: db-StatefulSet
+#   name: db-deployment
 #   namespace: apka
+#   labels:
+#     app: db
 # spec:
-#   serviceName: db-service
 #   replicas: 1
 #   selector:
 #     matchLabels:
@@ -40,20 +16,46 @@ spec:
 #         app: db
 #     spec:
 #       containers:
-#       - name: db
-#         image: mongo:latest
-#         ports:
-#         - containerPort: 27017
-#           name: db-port
-#         volumeMounts:
-#         - name: pv_backend
-#           mountPath: /data/pv_backend/
-#   volumeClaimTemplates:
-#   - metadata:
-#       name: vct-backend
-#     spec:
-#       accessModes: [ "ReadWriteOnce" ]
-#       resources:
-#         requests:
-#           storage: 500Mi
+#         - name: db
+#           image: mongo:latest
+#           ports:
+#           - containerPort: 27017
+#             name: db-port
+
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-statefulset
+  namespace: apka
+  labels:
+    app: db
+spec:
+  serviceName: db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+          name: db-port
+        volumeMounts:
+        - name: vct-backend
+          mountPath: /data/db/
+  volumeClaimTemplates:
+  - metadata:
+      name: vct-backend
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi
 
