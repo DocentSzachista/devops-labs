@@ -21,6 +21,13 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 8000
+        volumeMounts:
+          - name: db-volume
+            mountPath: /app
+      volumes:
+        - name: backend-volume
+          persistentVolumeClaim:
+            claimName: pv-claim
 
 # Wersja na 4.0:
 
