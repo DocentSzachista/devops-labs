@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: apka
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      volumes:
+      - name: backend-storage
+        persistentVolumeClaim:
+          claimName: volumeclaim
+      containers:
+      - name: laby2
+        image: laby:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: backend-storage
+          mountPath: /data/pv_backend/
+        env:
+          - name: LOGGING_LEVEL
+            valueFrom:
+              configMapKeyRef:
+                name: backend-config
+                key: logging
+
+
+#Na ocene 4.0 / 4.5
+#minikube start 
+#minikube docker-env | Invoke-Expression
+#minikube stop
+#minikube start
+#minikube dashboard
+#minikube image ls
+#kubectl create namespace apka   #tworzenie namespacu
+#kubectl config set-context --current --namespace=apka #zmiana kontekstu na stworzoną wcześniej apka
+#kubectl create -f deployment.yaml     #tworzenie deploymentu
+#kubectl create -f statefull.yaml      #tworzenie statefull
+#kubectl create -f persistentvolume.yaml      #tworzenie persistentvolume
+#kubectl create -f persistentvolumeclaim.yaml  #tworzenie persistentvolumeclaim
+#kubectl create -f config.yaml 
+#kubectl get pods     
+#kubectl get deployments --namespace apka
+#kubectl describe pod 
+#kubectl get pv
+#kubectl get pv --namespace apka
+#kubectl get pvc --namespace apka
+#kubectl get configmaps --namespace apka #sprawdzałem czy kubernetes widzi configmape
+#kubectl get configmap backend-config --namespace apka -o yaml #sprawdzałem zawartośc configmapy czy wszystko jest w porządku
+#Na końcu postanowiłem usunąć stworzone przeze mnie pliki:
+#kubectl delete service backend-service  
+#kubectl delete deployment backend-deployment --namespace apka
+#kubectl delete -f statefull.yaml 
+#kubectl delete -f persistentvolumeclaim.yaml 
+#kubectl delete -f persistentvolume.yaml 
+#kubectl delete -f config.yaml 
