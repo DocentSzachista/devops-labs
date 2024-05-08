@@ -2,9 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
-  namespace: apka
-  labels:
-    app: backend
 spec:
   replicas: 1
   selector:
@@ -16,8 +13,12 @@ spec:
         app: backend
     spec:
       containers:
-      - name: backend-service
-        image: fiszli_backend:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8000
+        - name: backend-service
+          image: fiszli_backend:latest
+          volumeMounts:
+            - name: backend-data
+              mountPath: /app/logs 
+      volumes:
+        - name: backend-data
+          persistentVolumeClaim:
+            claimName: pv_backendclaim
