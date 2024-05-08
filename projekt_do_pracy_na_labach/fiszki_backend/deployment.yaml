@@ -21,4 +21,4 @@ spec:
       volumes:
         - name: backend-data
           persistentVolumeClaim:
-            claimName: pv_backendclaim
+            claimName: pv_backend
