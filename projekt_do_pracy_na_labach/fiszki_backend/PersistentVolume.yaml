@@ -5,7 +5,7 @@ metadata:
 spec:
   claimRef:
     namespace: default
-    name: pv_backendc
+    name: pv_backend
   accessModes:
       - ReadWriteOnce
   capacity:
