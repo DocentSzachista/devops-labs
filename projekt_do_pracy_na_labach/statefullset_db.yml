@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: statefullset-db
+  namespace: app-namespace
+spec:
+  serviceName: "mongo-db"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mongo-db
+  template:
+    metadata:
+      labels:
+        app: mongo-db
+    spec:
+      containers:
+      - name: mongo-db
+        image: mongo:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: statefullset-db-v
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: statefullset-db-v
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi
