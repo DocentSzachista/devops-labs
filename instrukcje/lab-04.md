@@ -135,11 +135,14 @@ Waszym pierwszym zadanie będzie skonfigurować deployment backend'u tak, aby Ku
 W zależności czy utworzyliście StatefullSet czy Deployment dla bazy danych należy teraz stworzyć init container który:
 - Sprawdzi czy są dane do przekopiowania. Jeżeli są ma je przekopiować do data `/data/db`.
 - Jeżeli ich nie ma to ma po prostu się pojawić komunikat w logach.
+- Jeżeli nie realizowałeś zadania z bazą danych i zadania z cronJobem to twoim zadaniem będzie jedynie wyrzucić komunikat czy pliki są czy ich nie ma. Plik z gotowym configiem statefullSeta jest na repozytorium
 
 Podpowiedzi:
 - Komenda aby pokazało komunikat `echo "tu wpisz swoj tekst"`.
 - Komenda która skopiuje dane `cp -r <źródło> <miejsce_docelowe>`
-- Przydatny będzie to wszystko okleić w warunek w polu `command`
+- Przydatne będzie to wszystko okleić w warunek w polu `command`
+- Komenda przykładowa:
+  `["sh", "-c", "if [ -e /dsb/backup/example.txt ]; then echo 'Plik istnieje'; else echo 'Plik nie istnieje'; fi"]`
 
 Aby sprawdzić czy potencjalny log się wydrukował polecam użyć tej komendy:
 
@@ -149,7 +152,7 @@ kubectl logs <nazwa-poda> -c <nazwa-init-containera>
 
 
 
-### 4.5 A teraz ograniczmy ruch sieciowy.
+### 5.0 A teraz ograniczmy ruch sieciowy.
 
 To teraz zabawmy się w tworzenie network policy. Chciałbym dostać od was następujące rzeczy:
 
@@ -161,13 +164,6 @@ Podpowiedzi:
 - należy zdefiniować ruch egress i ingress
 - każdy z nich zawiera namespaceSelector, gdzie trzeba podać nazwę namespace'a do którego chcemy zezwolić na ruch.
 - określić podSelector w spec który określi kubernetesowi które pody będą objęte zabezpieczeniem.
-
-
-### 5.0 Czy mają Państwo moment porozmawiać o kontach serwisowych?
-
-
-
-
 
 
 ## Linki 
