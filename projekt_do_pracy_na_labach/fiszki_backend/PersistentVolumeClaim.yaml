@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pv_backendclaim
+  name: pv_backend
 spec:
   accessModes:
     - ReadWriteOnce
