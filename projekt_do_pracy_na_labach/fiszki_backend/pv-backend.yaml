@@ -12,7 +12,7 @@ spec:
     path: /data/pv-backend/
   claimRef:
      name: pv-backend-claim
-     namespace: apka
+     namespace: app-namespace
 
 
 #Komendy do zadania do 4.5
