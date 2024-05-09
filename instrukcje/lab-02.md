@@ -62,7 +62,7 @@ spec:
       containers:
       - name: frontend-service
         image: fiszki_app:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: mi
         ports:
         - containerPort: 80
 
@@ -300,7 +300,7 @@ kubectl expose deployment nginx-deployment --port=80 --type=LoadBalancer
 ```
 (Aby sprawdzić czy faktycznie udostępniliście porty można użyć chociażby komendy `minikube service --all`)
 
-- Nie jest to obowiązkowe ale na koniec możecie usunąć ten deployment komendą `kubectl remove deployment nginx-deployment`
+- Nie jest to obowiązkowe ale na koniec możecie usunąć ten deployment komendą `kubectl delete deployment nginx-deployment`
 
 ### Stworzenie własnego deploymentu aplikacji 
 - Do zadania można podejść od zarówno od strony komend jak i pisania samemu yamli. Przykładowe wzorce do napisania własnych plików yamlowych znajdziecie na stronie [dokumentacji](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) wpisując w wyszukiwanie nazwę zasobu który chcecie stworzyć
@@ -338,7 +338,7 @@ Kroki jakie trzeba podjąć:
 
 Podpowiedzi:
 - Typ serwisu który chcecie stworzyć to `ClusterIP`
-- Aby wiedzieć jakie IP potem przekazać w deploymencie backendu może się okazać pomocna komenda `kubectl get SVC`
+- Aby wiedzieć jakie IP potem przekazać w deploymencie backendu może się okazać pomocna komenda `kubectl get SVC`. Może się też zdarzyć że wam po IP nie będzie działać. Możecie wtedy spróbować po nazwie serwisu. 
 
 **Zbyteczny** komentarz od prowadzącego: W komercyjnym świecie jako devopsi byście mieli postawić bazę danych jako StatefullSet, ale żeby nie utrudniać nam życia tworzymy to na razie jako zwykły deployment. 
 

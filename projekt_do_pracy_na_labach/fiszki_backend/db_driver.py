@@ -11,7 +11,6 @@ client = motor.motor_asyncio.AsyncIOMotorClient(db_url, uuidRepresentation='stan
 database = client.students
 collections = database.get_collection("collections")
 
-
 async def add_collection(collection: Collection):
     print(collection.flashCards)
     new_collection = await collections.insert_one(
