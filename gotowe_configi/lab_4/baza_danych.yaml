@@ -25,6 +25,13 @@ spec:
         volumeMounts:
         - mountPath: "data/db"
           name: log-volume-claim
+      initContainers:
+        - name: check-backup
+          image: busybox:latest
+          command: ["sh", "-c", "if [ -e /dsb/backup/example.txt ]; then echo 'Plik istnieje'; else echo 'Plik nie istnieje'; fi"]
+          volumeMounts:
+          - name: backup-volume
+            mountPath: /data/backup
   volumeClaimTemplates:
   - metadata:
       name: log-volume-claim
