@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
-  namespace: laby21
+  namespace: lab31
 spec:
   replicas: 2
   selector:
@@ -15,11 +15,33 @@ spec:
     spec:
       containers:
         - name: backend-serviceee
-          image: fiszkibackend:latest
+          image: fiszki_backend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
+          volumeMounts:
+            - name: data-volume    
+              mountPath: /app
+      volumes:
+        - name: backend-volume
+          persistentVolumeClaim:
+            claimName: task-pv-claim
+   	livenessProbe:
+      	 httpGet:
+       	  path: /isAlive
+      	  port: 8000
+         initialDelaySeconds: 15
+         periodSeconds: 30
+        readinessProbe:
+         httpGet:
+          path: /isReady
+          port: 8000
+         initialDelaySeconds: 10
+         periodSeconds: 20
 
+
+
+#stare komendy
 # kubectl apply -f backend-deployment.yaml
 # kubectl get deployments
 # kubectl get pods
@@ -34,32 +56,4 @@ spec:
 # kubectl config set-context --current --namespace=nazwa_namespace
 
 #kubectl delete service backend-service
-
-# lab3 
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: backend
-  template:
-    metadata:
-      labels:
-        app: backend
-    spec:
-      containers:
-        - name: backend
-          image: backend-image
-          volumeMounts:
-            - name: backend-data
-              mountPath: /app/logs 
-      volumes:
-        - name: backend-data
-          persistentVolumeClaim:
-            claimName: pvc_backend
-
 

@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-statefulset
+  labels:
+    app: database
+spec:
+  serviceName: database
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: database
+        image: mongo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+          name: db-port
+        volumeMounts:
+        - mountPath: "data/db"
+          name: log-volume-claim
+      initContainers: # -e dsb/backup/example.txt
+      - name: init-container
+        image: busybox
+        command: ["sh", "-c", "if [ -e dsb/backup/example.txt ]; then echo 'Plik istnieje'; else echo 'Plik NIE istnieje'; fi"]
+        volumeMounts:
+        - name: data-volume
+          mountPath: "/data/db"
+  volumeClaimTemplates:
+  - metadata:
+      name: log-volume-claim
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   name: MongoStatefullSet  
+# spec:
+#   serviceName: "mongodb"  
+#   replicas: 2
+#   selector:
+#     matchLabels:
+#       app: mongodb        
+#   template:
+#     metadata:
+#       labels:
+#         app: mongodb     
+#     spec:
+#       containers:
+#       - name: mongo      
+#         image: mongo:latest 
+#         ports:
+#         - containerPort: 27017   
+#           name: mongo
+#         volumeMounts:
+#         - name: pv_backend    
+#           mountPath: /data/db   
+#         envFrom:
+#         - configMapRef:
+#           name: backend-config
+#   volumeClaimTemplates:
+#   - metadata:
+#       name: data-volume  
+#     spec:
+#       accessModes: [ "ReadWriteOnce" ]
+#       resources:
+#         requests:
+#           storage: 500Mi   # Zmieniamy wymagania pamięci na 500Mi
+# # 
