@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: apka
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      volumes:
+        - name: pv-backend
+          persistentVolumeClaim:
+            claimName: backend-volume-claim
+      containers:
+        - name: backend
+          image: fiszki_backend:latest
+          imagePullPolicy: Never
+          ports:
+          - containerPort: 8000
+            name: backend-port
+          livenessProbe:
+            httpGet:
+            path: /healthz
+            port: 8000
+          env:
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: backend-configmap
+                key: databaseUrl
+          - name: logging
+            valueFrom:
+              configMapKeyRef:
+                name: backend-configmap
+                key: logging
+          volumeMounts:
+            - mountPath: "/app/loggs"
+              name: pv-backend
+
+# #minikube start
+# #kubectl get namespaces
+# #kubectl config set-context --current --namespace=apka
+# #eval $(minikube docker-env)
+# #docker build -t fiszki_backend:latest fiszki_backend/
+# #kubectl apply -f kubernetes_yamls/
+# minikube service backend --namespace=apka
