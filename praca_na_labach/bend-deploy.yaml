@@ -21,7 +21,23 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
-    volumes:
-      - name: pv_backend
+        livenessProbe:
+          httpGet:
+            path: /isAlive
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /isReady
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        volumeMounts:
+        - name: pv-backend
+          mountPath: /data/pv_backend/
+      volumes:
+      - name: pv-backend
         persistentVolumeClaim:
           claimName: log-volume-claim
+
