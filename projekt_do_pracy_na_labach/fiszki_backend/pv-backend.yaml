@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-backend
+  namespace: app-namespace
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Mi
+  hostPath:
+    path: /data/pv-backend/
+  claimRef:
+     name: pv-backend-claim
+     namespace: apka
+
+
+#Komendy do zadania do 4.5
+#minikube start
+#kubectl create namespace apka
+#kubectl config set-context --current --namespace=app-namespace
+#kubectl apply -f backend_deployments.yaml
+#kubectl apply -f pv-backend.yaml      
+#kubectl apply -f pv-backend-claim.yaml
+#kubectl apply -f statefullset-db.yaml
+#kubectl apply -f backend-config.yaml
+#kubectl get pv --namespace app-namespace
+#kubectl get pvc --namespace app-namespace
+#kubectl get configmaps --namespace app-namespace
