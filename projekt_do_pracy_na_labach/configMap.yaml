@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-backend
+  namespace: lab2
+data:
+  logging: "DEBUG"
+  database-url: "mongodb://27017"

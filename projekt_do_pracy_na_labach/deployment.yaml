@@ -16,15 +16,29 @@ spec:
         app: backend
     spec:
       containers:
-      - name: backend-service
-        image: backend:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 8000
-          name: backend-port
-        env: 
+        - name: backend
+          image: backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8000
+          volumeMounts:
+          - name: pv-backend 
+            mountPath: /app
+          env:
           - name: DATABASE_URL
-            value: "mongodb://db-service:27017"
+            valueFrom:
+              configMapKeyRef:
+                name: configmap-backend
+                key: database-url
+          - name: logging
+            valueFrom:
+              configMapKeyRef:
+                name: configmap-backend
+                key: logging
+      volumes:
+        - name: pv-backend 
+          persistentVolumeClaim:
+            claimName: pv-backend-claim
 
 # minikube start
 # kubectl create namespace lab2
