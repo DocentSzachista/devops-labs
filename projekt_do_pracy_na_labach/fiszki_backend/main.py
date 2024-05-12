@@ -36,8 +36,14 @@ app.include_router(router)
 @app.get("/isAlive")
 async def check_if_is_alive():
     LOGGER.info("Life check done")
+    LOGGER.debug("Debug set")
+
     return {"message": "Connected to API"}
 
+@app.get("/isReady")
+async def check_if_is_ready():
+
+    return {"message": "App is ready"}
 
 @app.get("/")
 def redirect_docs():
