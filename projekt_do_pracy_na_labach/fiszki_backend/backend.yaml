@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  #namespace: backend-namespace
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: fiszki_backend
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: backend-logs
+          mountPath: /app/data/logs/
+      volumes:
+      - name: backend-logs
+        persistentVolumeClaim:
+          claimName: backend-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  #namespace: backend-namespace
+  name: backend-service
+spec:
+  type: NodePort
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      nodePort: 30001

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-backend
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 950Mi
+  hostPath:
+    path: /data/pv_backend/
