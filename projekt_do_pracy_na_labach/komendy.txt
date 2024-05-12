@@ -1,34 +1,15 @@
 3.0
-# Zbudowanie obrazu Docker dla aplikacji backendowej
-docker build -t krycyg/repozytorium:fiszki_backend .
 
-# Zatagowanie obrazu
-docker tag krycyg/repozytorium:fiszki_backend krycyg/repozytorium:fiszki_backend
+kubectl apply -f pv-backend.yaml
+kubectl apply -f pv-backend-claim.yaml
+kubectl apply -f deployment-backend.yaml
 
-# Wysłanie obrazu do rejestru Docker Hub
-docker push krycyg/repozytorium:fiszki_backend
 
 
 3.5
-# Stworzenie Deploymentu
-kubectl apply -f deployment-backend.yaml
 
-# Stworzenie Serwisu
-kubectl apply -f service-backend.yaml
 
 4.0
-# Stworzenie nowego namespace'a
-kubectl create namespace namespace2
 
-# Ustawienie kontekstu na nowo utworzony namespace
-kubectl config set-context --current --namespace=namespace2
 
 5.0
-# Stworzenie Deploymentu dla bazy danych MongoDB
-kubectl apply -f deployment-mongodb.yaml
-
-# Stworzenie Serwisu dla bazy danych MongoDB
-kubectl apply -f service-mongodb.yaml
-
-# Modyfikacja Deploymentu backendu
-kubectl apply -f deployment-backend.yaml

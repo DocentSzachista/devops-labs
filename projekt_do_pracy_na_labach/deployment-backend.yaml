@@ -13,6 +13,10 @@ spec:
       labels:
         app: backend
     spec:
+      volumes:
+        - name: log-volume
+          persistentVolumeClaim:
+            claimName: pv-backend-claim
       containers:
       - name: backend
         image: krycyg/repozytorium:fiszki_backend
@@ -22,3 +26,6 @@ spec:
         env:
         - name: DATABASE_URL
           value: "mongodb://mongodb-service:27017"
+        volumeMounts:
+          - mountPath: /var/log
+            name: log-volume
