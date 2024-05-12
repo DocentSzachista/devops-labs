@@ -7,9 +7,25 @@ kubectl apply -f deployment-backend.yaml
 
 
 3.5
-
+  claimRef:
+    name: pv-backend-claim
+    namespace: namespace2
+  hostPath:
+    path: /data/pv_backend
 
 4.0
+kind: StatefulSet
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi
 
+kubectl apply -f deployment-mongodb.yaml
+
+4.5
 
 5.0
