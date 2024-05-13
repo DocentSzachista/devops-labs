@@ -11,7 +11,7 @@ No to już udało się nam zdeployować aplikację,  nawet otworzyliśmy ruch na
 ## PersistentVolume i StatefullSet
 
 <p style="text-align:justify">
-Jak w przypadku dockera mieliśmy wolumeny to w przypadku Kubernetesa mamy `PersistentVolume`. Jego rola w zasadzie jest taka sama, czyli tworzyć przestrzeń w której dane będą trzymane i w razie przypadku usunięcia poda przywracane z powrotem wraz z odtworzeniem poda. 
+Jak w przypadku dockera mieliśmy wolumeny to w przypadku Kubernetesa mamy `PersistentVolume`. Jego rola w zasadzie jest taka sama jak <b>wolumenów</b> w Dockerze, czyli tworzyć przestrzeń w której dane będą trzymane i w razie przypadku usunięcia poda przywracanie jej z powrotem wraz z odtworzeniem poda. 
 </p>
 
 <p style="text-align:justify">
@@ -78,9 +78,7 @@ spec:
         requests:
           storage: 1Gi
 ```
-To co zostało dodane z poprzednich labów to `volumeClaimTemplates` a więc co tam się kryje:
-
-- volumeClaimTemplates: Szablony żądań woluminów używane do dynamicznego tworzenia woluminów dla każdej repliki.
+To co zmieniło się w porównaniu do poprzednich labów to dodanie `volumeClaimTemplates` oraz zmiana typów kontrolera z `Deployment` na `StatefullSet`. Także `volumeClaimTemplates` są to szablony żądań woluminów używane do dynamicznego tworzenia woluminów dla każdej repliki w StatefullSecie. Kubernetes utworzy dla każdej z repliki żądany wolumen oraz jeżeli w czasie pracy któryś pod przestanie działać to dzięki unikalnym ID po resecie dane zostaną odpowiednio przydzielone do replik. A teraz przejdźmy do opcji jakie ten template posiada:
 
 - `metadata:` Metadane dla szablonów woluminów.
     - `name:` Nazwa szablonu woluminu.
@@ -134,6 +132,16 @@ spec:
   storageClassName: standard
 ```
 
+- `spec`: Zawiera specyfikację dla żądania wolumenu trwałego.
+
+- `accessModes`: Określa dostępne tryby dostępu do wolumenu. Tutaj ustawiony jest tylko jeden tryb ReadWriteOnce, co oznacza, że wolumen może być montowany w trybie tylko do odczytu/zapisu przez jedno urządzenie w danym czasie.
+
+- `resources`: Określa żądane zasoby dla wolumenu.
+- `requests`: Określa minimalne wymagane zasoby. Tutaj ustawiona jest żądana pojemność przechowywania na poziomie 1 gigabajta (1Gi).
+
+- `storageClassName`: Określa klasę magazynu, która ma być używana do tworzenia wolumenu. Tutaj używana jest klasa standard, która jest jedną z domyślnych klas dostępnych w klastrze Kubernetes.
+
+
 ### ConfigMap
 ```
 apiVersion: v1
@@ -173,12 +181,12 @@ Co należy zrobić?
 ### 4.0 - Poprawienie grzechów z lab 3 
 Należy utworzyć Statefull Set zamiast Deploymentu z bazą danych 
 Czyli inaczej co trzeba zrobić: 
-- Wejść na stronę dokumentacji [StatefullSet](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/) i przekopiować definicję StatefullSet'u.
+- Wejść na stronę dokumentacji [StatefullSet](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/), bądź w [instrukcję](#statefullset) i przekopiować definicję StatefullSet'u.
 - Zmienić nazwy w metadanych na nazwy znaczące, na przykład `MongoStatefullSet` (to jest tylko przykład, błagam, nie nazywajcie wszyscy tak samo xD). 
 - Podmienić obraz z nginx'a na obraz mongo oraz podmienić:
-    - wolumen na taki, gdzie zapisywane są dane
+    - ścieżkę wolumenu na taką, gdzie zapisywane są dane
     - udostępniany port
-    - Podmienić `volumeClaimTemplate` a konkretnie można mu zmienić nazwę Claim'a oraz wymagania pamięci na `500Mi`
+    - Podmienić `volumeClaimTemplate` a konkretnie można mu zmienić nazwę Claim'a oraz wymagania pamięci na `500Mi`(Może być mniej)
 
 ### 4.5 Stworzenie config mapy, która będzie zawierać ustawienia back-endu
 
@@ -214,4 +222,16 @@ Na sam start
     ```
     - Podmiencie obraz na mongo.
 
-Patrzycie następnie na status CronJoba i patrzycie czy się wykonał.
+Patrzycie następnie na status CronJoba i patrzycie czy się wykonał na dashbordzie minikube'a. Dla osób działajacych na instancjach kubernetesa bez minikube'a po utworzeniu CronJoba polecam użyć tej komendy by sobie zweryfikować czy wam działa:
+
+```
+kubectl get jobs --watch
+```
+Ta komenda zaczyna tworzyć wszystkie joby utworzone na kubernetesie na przestrzeni nazw default. Przykładowe wyjście:
+
+```
+NAME               COMPLETIONS   DURATION   AGE
+hello-4111706356   0/1                      0s
+hello-4111706356   0/1           0s         0s
+hello-4111706356   1/1           5s         5s
+```
