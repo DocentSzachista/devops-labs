@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: backend     #-service
   namespace: apka
+  labels:
+    app: backend
 spec:
   type: NodePort
   selector:

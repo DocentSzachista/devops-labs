@@ -28,8 +28,16 @@ spec:
             name: backend-port
           livenessProbe:
             httpGet:
-            path: /healthz
-            port: 8000
+              path: /isAlive
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /isReady
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
           env:
           - name: DATABASE_URL
             valueFrom:

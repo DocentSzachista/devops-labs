@@ -1,43 +1,8 @@
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: db-statefulset
-  namespace: apka
-  labels:
-    app: db
-spec:
-  serviceName: db
-  replicas: 1
-  selector:
-    matchLabels:
-      app: db
-  template:
-    metadata:
-      labels:
-        app: db
-    spec:
-      containers:
-      - name: db
-        image: mongo:latest
-        ports:
-        - containerPort: 27017
-          name: db-port
-        volumeMounts:
-        - name: vct-backend
-          mountPath: /data/db/
-  volumeClaimTemplates:
-  - metadata:
-      name: vct-backend
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 500Mi
-
 # apiVersion: apps/v1
 # kind: StatefulSet
 # metadata:
 #   name: db-statefulset
+#   namespace: apka
 #   labels:
 #     app: db
 # spec:
@@ -53,19 +18,61 @@ spec:
 #     spec:
 #       containers:
 #       - name: db
-#         image: mongo
-#         imagePullPolicy: IfNotPresent
+#         image: mongo:latest
 #         ports:
 #         - containerPort: 27017
 #           name: db-port
 #         volumeMounts:
-#         - mountPath: "data/db"
-#           name: log-volume-claim
+#         - name: vct-backend
+#           mountPath: /data/db/
 #   volumeClaimTemplates:
 #   - metadata:
-#       name: log-volume-claim
+#       name: vct-backend
 #     spec:
 #       accessModes: [ "ReadWriteOnce" ]
 #       resources:
 #         requests:
 #           storage: 500Mi
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-statefulset
+  labels:
+    app: db
+spec:
+  serviceName: db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: mongo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+          name: db-port
+        volumeMounts:
+        - mountPath: "data/db"
+          name: log-volume-claim
+      # initContainers:
+      # - name: check-backup
+      #   image: busybox:latest
+      #   command: ['sh', '-c', ' echo "Make Backup."']
+      #   volumeMounts:
+      #   - name: backup-volume
+      #     mountPath: /data/backup
+  volumeClaimTemplates:
+  - metadata:
+      name: log-volume-claim
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi

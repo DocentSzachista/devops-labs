@@ -4,7 +4,7 @@ metadata:
   name: backend-configmap
   namespace: apka
 data:
-  databaseUrl: "mongodb://db-service:27017"
+  databaseUrl: "mongodb://db:27017"
   logging: DEBUG
   # env: 
   #   - name: DATABASE_URL
