@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: lab3
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: fiszki-backend
+        image: backend-image:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: pv-backend
+          mountPath: /data/pv-backend/
+          readOnly: True
+        env: 
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: deployment-config
+                key: DATABASE_URL
+          - name: logging
+            valueFrom:
+              configMapKeyRef:
+                name: deployment-config
+                key: logging
+          # service
+          - name: MONGODB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: deployment-config
+                key: mongo-url
+      volume:
+        - name: pv-backend
+          persistentVolumeClaim:
+            claimName: pvc-backend
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: backend-service
+spec:
+  type: NodePort
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 30100
+

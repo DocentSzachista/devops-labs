@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-db
+spec:
+  serviceName: mongo-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  # template
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      # container
+      containers:
+      - name: mongodb
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: pv-backend
+          mountPath: /data/pv-backend/
+      # init container
+      initContainers:
+      - name: check-copyability
+        image: busybox:latest
+        # TODO: komenda chyba nie taka w sensie /data/pv-backend/*
+        # TODO: czy ma byc "cp /data/pv-backend/* /data/db"
+        command: 
+        - "sh"
+        - "-c"
+        - |
+          if [-e /data/pv-backend/backup/*]; THEN
+            echo 'Plik istnieje, kompiowanie ...'
+            cp "$(find /data/pv-backend/backup/ -maxdepth 1 -type f -exec ls -t {} + | head -1)" ./data/db
+            echo 'Kopiowanie zakończone.'
+          else
+            echo 'Plik nie istnieje.'
+          fi
+        volumeMounts:
+        - name: pv-backend
+          mountPath: /data/pv-backend
+  # volume claim
+  volumeClaimTemplates:
+  - metadata:
+      name: pv-backend
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+
