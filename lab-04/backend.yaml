@@ -1,0 +1,52 @@
+# Backend deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-backend
+  namespace: fiszki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-service
+          image: fiszki_backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "mongodb://mongo-db-sv:27017"
+          livenessProbe:
+            httpGet:
+              path: /isAlive
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /collections/
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+# Access to backend from the browser
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: fiszki
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      nodePort: 30001
+  type: LoadBalancer

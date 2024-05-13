@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-db-sv
+  namespace: fiszki
+  labels:
+    app: mongodb
+spec:
+  ports:
+    - protocol: TCP
+      port: 27017
+  selector:
+    app: mongodb
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-db-ss
+  namespace: fiszki
+spec:
+  serviceName: "mongo-db-sv"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - mountPath: "data/db"
+              name: log-volume-claim
+      initContainers:
+        - name: check-backup
+          image: busybox
+          imagePullPolicy: IfNotPresent
+          command:
+            [
+              "sh",
+              "-c",
+              "latest_backup=$(ls -dtr /backup/* | tail -n 1); echo \"Latest backup: ${latest_backup}\"; if cp -r $latest_backup/* /data/; then echo 'Backup restored successfully\n\nls /data/:'; ls /data/; else echo 'Failed to restore backup'; fi",
+            ]
+          volumeMounts:
+            - name: log-volume-claim
+              mountPath: /data/
+            - name: backup-volume
+              mountPath: /backup/
+      volumes:
+        - name: backup-volume
+          persistentVolumeClaim:
+            claimName: backup-volume-claim
+  volumeClaimTemplates:
+    - metadata:
+        name: log-volume-claim
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 500Mi

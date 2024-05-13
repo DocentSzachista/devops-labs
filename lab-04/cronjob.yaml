@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-job
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: backup-job
+              image: mongo:latest
+              imagePullPolicy: IfNotPresent
+              command: [
+                  "sh",
+                  "-c",
+                  "mongodump --host mongo-db-sv --out /backup/$(date +%Y-%m-%d_%H-%M-%S) &&\
+                  echo 'Backup successful' &&\
+                  ls -l /backup/",
+                ]
+              volumeMounts:
+                - name: backup-volume
+                  mountPath: /backup/
+          volumes:
+            - name: backup-volume
+              persistentVolumeClaim:
+                claimName: backup-volume-claim
+          restartPolicy: OnFailure
