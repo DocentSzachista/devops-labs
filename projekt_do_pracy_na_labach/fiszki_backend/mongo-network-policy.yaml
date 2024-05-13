@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: NetworkPolicy
+metadata:
+  name: mongo-net
+spec:
+  podSelector:
+    matchLabels:
+      app: networkpolicy
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+      matchLabels:
+        environment: lab
+    - podSelector:
+      matchLabels:
+        app: backend
+    ports:
+    - protocol: TCP
+      port: 8000
+  egress:
+  - to:
+    - namespaceSelector:
+      matchLabels:
+        environment: lab
+    - podSelector:
+      matchLabels:
+        app: mongo
+    ports:
+    - protocol: TCP
+      port: 27017

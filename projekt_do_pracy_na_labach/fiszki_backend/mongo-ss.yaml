@@ -21,6 +21,23 @@ spec:
         volumeMounts:
         - name: pv-backend
           mountPath: /data/pv-backend/
+      initContainers:
+      - name: check-backup
+        image: busybox:latest
+        command:
+        - "sh"
+        - "-c"
+        - |
+          if [ -e /data/pv-backend/backup/* ]; then
+            echo 'Plik istnieje, kopiowanie...'
+            cp "$(find /data/pv-backend/backup/ -maxdepth 1 -type f -exec ls -t {} + | head -1 )" /data/db/
+            echo 'Kopiowanie zakończone.'
+          else
+            echo 'Plik nie istnieje.'
+          fi
+        volumeMounts:
+        - name: pv-backend
+          mountPath: /data/pv-backend/
   volumeClaimTemplates:
   - metadata:
       name: pv-backend
@@ -41,4 +58,3 @@ spec:
   ports:
   - port: 27017
     targetPort: 27017 
-

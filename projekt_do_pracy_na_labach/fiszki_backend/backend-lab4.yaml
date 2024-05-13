@@ -1,0 +1,77 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-service
+          image: fiszki-backend:1.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /isAlive
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /isReady
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          env:
+            - name: MONGODB_HOST
+              value: 10.97.216.177
+            - name: logging
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-cm
+                  key: logging
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-cm
+                  key: DATABASE_URL
+          volumeMounts: # added volume to deployment
+          - name: pv-backend
+            mountPath: /data/pv-backend/
+            readOnly: true
+      volumes:
+        - name: pv-backend
+          persistentVolumeClaim:
+            claimName: pv-backend
+      
+        
+
+# Service inside Deployment file
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80  
+      targetPort: 8000  
+      nodePort: 30000
