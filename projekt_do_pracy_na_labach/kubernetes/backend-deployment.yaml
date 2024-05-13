@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: moj-namespace
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-container
+        image: nazwa1 
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: 500m  
+            memory: 512Mi  
+          requests:
+            cpu: 200m  
+            memory: 256Mi   
+        env:
+        - name: DATABASE_URL
+          value: "mongodb://10.100.43.23:27017"
+          volumeMounts:
+        - name: logs-volume   
+          mountPath: /logs    
+  volumes:
+  - name: logs-volume       
+    persistentVolumeClaim:
+      claimName: pvc_backend

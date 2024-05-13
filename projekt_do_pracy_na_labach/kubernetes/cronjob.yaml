@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob-name
+spec:
+  schedule: "0 2 * * *"  
+  timezone: Europe/Warsaw 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: mongodump
+            image: mongo  
+            command:
+            - sh
+            - -c
+            - mongodump --host mongodb-service-0.mongodb-service --db fiszki --out /backup/$(date +%Y-%m-%d_%H-%M-%S)
+          restartPolicy: OnFailure

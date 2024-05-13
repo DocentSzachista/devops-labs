@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: config-namespace
+  name: backend-config
+data:
+  logging: "INFO"
+  DATABASE_URL: "mongodb://10.100.43.23:27017"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: moj-namespace
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-container
+        image: nazwa1 
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: 500m   
+            memory: 512Mi   
+          requests:
+            cpu: 200m   
+            memory: 256Mi  
+        envFrom:
+        - configMapRef:
+            name: backend-config
