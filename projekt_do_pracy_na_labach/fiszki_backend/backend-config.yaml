@@ -5,4 +5,4 @@ metadata:
   namespace: app-namespace
 data:
   logging: "DEBUG"
-  DATABASE_URL: "mongodb://mongo:27017"
+  DATABASE_URL: "mongodb://db-service:27017"

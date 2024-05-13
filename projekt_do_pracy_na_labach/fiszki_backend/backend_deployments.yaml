@@ -28,12 +28,12 @@ spec:
         - name: DATABASE_URL
           valueFrom:
             configMapKeyRef:
-              name: configmap-backend
-              key: database-url
+              name: backend-config
+              key: DATABASE_URL
         - name: logging
           valueFrom:
             configMapKeyRef:
-              name: configmap-backend
+              name: backend-config
               key: logging
       volumes:
       - name: pv-backend 
