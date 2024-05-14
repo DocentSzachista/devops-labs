@@ -18,11 +18,12 @@ spec:
       ports:
         - protocol: TCP
         - port: 27017
-  # egress:
-  # - to:
-  #     - namespaceSelector:
-  #         matchLabels:
-  #           name: akpa
-  #   ports:
-  #     - protocol: TCP
-  #     - port: 27017
+  egress:
+  - to:
+      - namespaceSelector:
+          matchLabels:
+            name: apka
+    ports:
+      - protocol: TCP
+      - port: 27017
+
