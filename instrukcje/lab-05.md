@@ -52,9 +52,39 @@ helm repo add stable https://charts.helm.sh/stable
 ```
 helm delete my-wordpress
 ```
-## Jak pisać własne helm charty
+## Jak pisać własne helm charty i podkładać wartości.
+Pisanie helm chartów wygląda tak, że bierzecie konfigi które pisaliście do kubernetesa (chociażby deployment, Serwisy itd) i dodajecie w ich polach odwołania do pliku values.yaml, które wygląda na przykład tak:
 
-jest to dosyć proste, jak chcecie zastąpić własną wartość 
+`{{.Values.backendServer.imagePullPolicy}}`
+
+Kluczowe jest aby dodać dwie klamry otwierające i dwie zamykające. Następne `.Values` znaczy tyle że odwołujecie się do pliku `values.yaml` a ścieżki podane po kropkach odwzorowują strukturę tego pliku. W powyższym przykładzie odwołujemy się do wartości pola `imagePullPolicy` które należy do zbioru wartości `backendServer`.
+
+I cała zabawa w najprostszym możliwym przypadku sprowadza się do czegoś takiego:
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: apka
+  labels: 
+    app: inny
+spec:
+  containers:
+  - name: nginx
+    image: fiszki_backend:latest
+    imagePullPolicy: {{.Values.backendServer.imagePullPolicy}}
+    ports:
+    - containerPort: {{.Values.backendServer.containerPort}}
+```
+i taki plik values.yaml:
+```
+backendServer:
+  imagePullPolicy: IfNotPresent
+  containerPort: 80
+```
+
+Istnieje wiele więcej featerów w helmie, chociażby uwzględnianie zasobów warunkowo, lecz na potrzeby labów nie będą potrzebne. Dla zainteresowanych odsyłam do stronki dokumentacji [Helm'a.](https://helm.sh/docs/chart_template_guide/getting_started/) 
 
 ## Zadania
 
