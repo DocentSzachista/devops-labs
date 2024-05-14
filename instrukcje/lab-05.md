@@ -52,6 +52,9 @@ helm repo add stable https://charts.helm.sh/stable
 ```
 helm delete my-wordpress
 ```
+## Jak pisać własne helm charty
+
+jest to dosyć proste, jak chcecie zastąpić własną wartość 
 
 ## Zadania
 
