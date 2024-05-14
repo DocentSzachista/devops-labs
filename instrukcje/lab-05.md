@@ -116,8 +116,14 @@ Można skonfigurować helm charta tak aby nam wyświetlał jakieś dodatkowe inf
 W zależności od tego co pracodawca będzie chciał to będziecie musieli pewnie wydać taki helm chart by zautomatyzować potok CI/CD i łatwo podmieniać różne wartości.
 
 Ale do rzeczy co jest tutaj dla was do zrobienia: 
-- Dodanie do templates pliki konfiguracyjne deployment, serwis, PersistentVolumes oraz PersistentVolumesClaims dla backendu
-- Dodanie pliku konfiguracyjnego z namespace'em 
-- W pliku values.yaml dodać 
+
+1. W pliku values.yaml dodać następujące wartości: 
+    - liczba replik jaka ma być tworzona do deploymentu
+    - tag jaki ma być przyporządkowywany do obrazu
+    - Port na jakim ma się wystawić aplikacja z backend'em.
+    - politykę pobierania obrazów.
+2. Dodanie do templates plików konfiguracyjnych deploymentu, serwisu dla backend'u.
+3. Następnie należy dodać odniesienia do pliku values.yaml tak aby móc potem za pomocą tego pliku ustawiać opcje podane w punkcie pierwszym. 
+
 
 
