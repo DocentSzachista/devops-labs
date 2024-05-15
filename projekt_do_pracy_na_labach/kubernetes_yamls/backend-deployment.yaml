@@ -60,3 +60,7 @@ spec:
 # #docker build -t fiszki_backend:latest fiszki_backend/
 # #kubectl apply -f kubernetes_yamls/
 # minikube service backend --namespace=apka
+
+# poprawne działanie probe'ów widać w logach w dashboardzie
+# kubectl logs db-statefulset-0 -c check-file
+# network policy jeszcze nie przetestowane - calico nie działa XDDD

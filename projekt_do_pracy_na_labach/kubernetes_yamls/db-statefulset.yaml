@@ -62,7 +62,7 @@ spec:
         - mountPath: "data/db"
           name: log-volume-claim
       initContainers:
-      - name: check-back-logs
+      - name: check-file
         image: busybox:latest
         command: ["sh", "-c", "if [ -e /data/db/diagnostic.data ]; then echo 'Plik istnieje'; else echo 'Plik nie istnieje'; fi"]
         volumeMounts:
