@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: lab2
+data:
+  logging: "INFO"
+  DATABASE_URL: "mongodb://10.106.122.32:27017"
+

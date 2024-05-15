@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-set
+  namespace: lab2
+spec:
+  serviceName: "mongo-service"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+      initContainers:
+      - name: init-copy
+        image: busybox
+        command: ["sh", "-c", "if [ -e /data/backup/example.txt ]; then echo 'Plik istnieje'; cp -r /data/backup/* /data/db/; else echo 'Plik nie istnieje'; fi"]
+        volumeMounts:
+        - name: mongo-backup
+          mountPath: /data/backup
+      volumes:
+      - name: mongo-data
+        persistentVolumeClaim:
+          claimName: pvc-mongo
+      - name: mongo-backup
+        persistentVolumeClaim:
+          claimName: pvc-backup
+  volumeClaimTemplates:
+  - metadata:
+      name: pvc-mongo
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 500Mi
+  - metadata:
+      name: pvc-backup
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 500Mi
+

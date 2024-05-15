@@ -4,6 +4,7 @@ metadata:
   name: backend-deployment
   namespace: lab2
 spec:
+  restartPolicy: Always
   replicas: 1
   selector:
     matchLabels:
@@ -33,6 +34,18 @@ spec:
         volumeMounts:
         - name: backend-logs
           mountPath: /path/to/logs
+        readinessProbe:
+          httpGet:
+            path: /isReady
+            port: 80
+          initialDelaySeconds: 20
+          periodSeconds: 20
+        livenessProbe:
+          httpGet:
+            path: /isAlive
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 30
       volumes:
       - name: backend-logs
         persistentVolumeClaim:
