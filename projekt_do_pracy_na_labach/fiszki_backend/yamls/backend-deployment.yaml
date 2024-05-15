@@ -22,6 +22,18 @@ spec:
         ports:
         - containerPort: 8000
           name: backend-port
+        livenessProbe: # LiveNessProbe - odpytuje, czy backend żyje
+          httpGet:
+            path: /isAlive # Endpoint isAlive
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 30
+        readinessProbe: #ReadinessProbe - odpytuje, czy jest połączenie z bazą danych
+          httpGet:
+            path: /isReady # Endpoint isReady
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 20
         volumeMounts:
           - name: data-volume
             mountPath: /app
@@ -73,3 +85,5 @@ spec:
 # [Feedback from the terminal: service "backend-service" deleted]
 
 # LABORATORIUM 3 - O STORAGE'U SŁÓW KILKA(DZIESIĄT)
+
+# LABORATORIUM 4 - INITCONTAINERS I INNE MAGICZNE SZTUCZKI
