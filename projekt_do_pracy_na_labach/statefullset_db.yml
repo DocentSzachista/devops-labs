@@ -23,6 +23,13 @@ spec:
         volumeMounts:
         - name: statefullset-db-v
           mountPath: /data/db
+      initContainers:
+        - name: check-file-existence
+          image: busybox:latest
+          command: ["sh", "-c", "if [ -e /data/db/backup/backupData.txt ]; then echo 'Plik istnieje'; else echo 'Plik nie istnieje'; fi"]
+          volumeMounts:
+          - name: backup-volume
+            mountPath: /data/db
   volumeClaimTemplates:
   - metadata:
       name: statefullset-db-v
