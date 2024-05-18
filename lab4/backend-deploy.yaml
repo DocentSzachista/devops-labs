@@ -15,6 +15,7 @@ spec:
       labels:
         app: backend
     spec:
+      # container
       containers:
       - name: fiszki-backend
         image: backend-image:latest
@@ -40,12 +41,26 @@ spec:
               configMapKeyRef:
                 name: deployment-config
                 key: logging
-          # service
           - name: MONGODB_HOST
             valueFrom:
               configMapKeyRef:
                 name: deployment-config
                 key: mongo-url
+        livenessProbe:
+          httpGet:
+            #podmiana endpointa na /isAlive
+            path: /isAlive 
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            #podmiana endpointa na /isReady
+            path: /isReady
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 20
+      # volume
       volume:
         - name: pv-backend
           persistentVolumeClaim:

@@ -27,8 +27,6 @@ spec:
       initContainers:
       - name: check-copyability
         image: busybox:latest
-        # TODO: komenda chyba nie taka w sensie /data/pv-backend/*
-        # TODO: czy ma byc "cp /data/pv-backend/* /data/db"
         command: 
         - "sh"
         - "-c"
