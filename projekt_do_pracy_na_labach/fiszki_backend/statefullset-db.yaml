@@ -23,6 +23,13 @@ spec:
         volumeMounts:
         - name: sfs-db-volume
           mountPath: /data/db
+      initContainers:
+        - name: check-backup
+          image: busybox:latest
+          command: ["sh", "-c", "if [ -e /data/db/backup.txt ]; then echo 'Plik istnieje!!!'; else echo 'Plik nie istnieje!!!'; fi"]
+          volumeMounts:
+          - name: backup-volume
+            mountPath: "/data/db"
   volumeClaimTemplates:
   - metadata:
       name: sfs-db-volume
