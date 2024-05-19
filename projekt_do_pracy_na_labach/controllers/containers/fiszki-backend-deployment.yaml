@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: fiszkilab2
+  labels:
+    app: fiszki-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fiszki-backend
+  template:
+    metadata:
+      labels:
+        app: fiszki-backend
+    spec:
+      containers:
+      - name: fiszki-backend
+        image: backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+          name: backend-port
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: fiszki-backend-cm
+              key: databaseUrl
+        - name: logging
+          valueFrom:
+            configMapKeyRef:
+              name: fiszki-backend-cm
+              key: logging
+        volumeMounts:
+        - mountPath: "/usr/app/log"
+          name: fiszki-backend-pv
+        livenessProbe:
+          httpGet:
+            path: /isAlive
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /isReady
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 20
+
+      volumes:
+      - name: fiszki-backend-pv
+        persistentVolumeClaim:
+          claimName: fiszki-backend-pvc

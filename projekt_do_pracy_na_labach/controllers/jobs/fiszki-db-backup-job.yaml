@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: fiszki-db-backup-job
+  namespace: fiszkilab2
+spec:
+  schedule: "0 2 * * *"
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  timeZone: "Europe/Warsaw"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: fiszki-dbdump-pv
+            persistentVolumeClaim:
+              claimName: fiszki-dbdump-pvc
+          containers:
+          - name: fiszki-db-backup-containter
+            image: mongo:4.4.6
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: TZ
+              value: Europe/Warsaw
+            volumeMounts:
+              - mountPath: "/backup"
+                name: fiszki-dbdump-pv
+            command:
+            - /bin/sh
+            - -c
+            - echo == DB DUMP START == >> /backup/log.txt; mongodump -vvv --host fiszki-db:27017 --db students --out /backup/$(date +%Y-%m-%d_%H-%M-%S) >> /backup/log.txt 2>&1; echo == DB DUMP END == >> /backup/log.txt
+          restartPolicy: OnFailure

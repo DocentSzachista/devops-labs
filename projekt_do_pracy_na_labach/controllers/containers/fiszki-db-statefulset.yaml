@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-statefulset
+  namespace: fiszkilab2
+  labels:
+    app: fiszki-db
+spec:
+  serviceName: fiszki-db
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fiszki-db
+  template:
+    metadata:
+      labels:
+        app: fiszki-db
+    spec:
+      containers:
+      - name: fiszki-db
+        image: mongo:4.4.6
+        ports:
+        - containerPort: 27017
+          name: db-port
+        volumeMounts:
+        - mountPath: "data/db"
+          name: db-statefulset-pvc
+      initContainers:
+      - name: fiszki-db-check-backup
+        image: busybox:latest
+        command: ["sh", "-c", "if [[ $(ls -Art /backup-vol | tail -n 1) ]]; then echo 'Reading most recent backup [ ' `ls -Art /backup-vol | tail -n 1` ' ] into DB.'; cp -r /backup-vol/`ls -Art /backup-vol | tail -n 1`/ /data/db; else echo 'No backups found.'; fi"]
+        volumeMounts:
+        - mountPath: "backup-vol"
+          name: backup-volume
+        - mountPath: "data/db"
+          name: db-statefulset-pvc
+      volumes:
+      - name: backup-volume
+        persistentVolumeClaim:
+          claimName: fiszki-dbdump-pvc
+
+  volumeClaimTemplates:
+  - metadata:
+      name: db-statefulset-pvc
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi
