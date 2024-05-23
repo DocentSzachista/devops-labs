@@ -10,6 +10,7 @@ spec:
   selector:
     matchLabels:
       app: backend
+      role: api
   template:
     metadata:
       labels:
@@ -35,6 +36,19 @@ spec:
               configMapKeyRef:
                 name: configmap-backend
                 key: logging
+          livenessProbe:
+            httpGet:
+              path: /isAlive
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /isReady
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            
       volumes:
         - name: pv-backend 
           persistentVolumeClaim:

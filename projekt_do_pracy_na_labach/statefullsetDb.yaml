@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       app: db
+      role: database
   template:
     metadata:
       labels:
@@ -23,6 +24,13 @@ spec:
         volumeMounts:
         - name: pv-backend
           mountPath: /data/db
+      initContainers:
+        - name: check-backup
+          image: busybox:latest
+          command: ["sh", "-c", "if [ -e /dsb/backup/example.txt ]; then cp -r /data/backup /data/db; else echo 'Plik nie istnieje'; fi"]
+          volumeMonunts:
+          - name: backup-volmue
+            mountPath: /data/backup
   volumeClaimTemplates:
   - metadata:
       name: pv-backend-claim
