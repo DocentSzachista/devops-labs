@@ -16,6 +16,7 @@ livenessProbe:
 kubectl apply -f deployment-backend.yaml
 
 4.0
+kubectl apply -f statefulset-mongodb.yaml
 
 
 4.5
