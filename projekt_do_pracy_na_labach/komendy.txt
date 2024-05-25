@@ -20,7 +20,7 @@ kubectl apply -f statefulset-mongodb.yaml
 
 
 4.5
-
+minikube start --network-plugin=cni --cni=calico
 
 
 5.0
