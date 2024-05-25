@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-namespace-traffic
-  namespace: namespace2
+  namespace: your-namespace
 spec:
   podSelector:
     matchLabels: {}
@@ -13,18 +13,18 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          name: namespace2
+          name: your-namespace
   egress:
   - to:
     - namespaceSelector:
         matchLabels:
-          name: namespace2
+          name: your-namespace
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: restrict-db-traffic
-  namespace: namespace2
+  namespace: your-namespace
 spec:
   podSelector:
     matchLabels:
@@ -35,7 +35,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          name: namespace2
+          name: your-namespace
     ports:
     - protocol: TCP
       port: 27017
