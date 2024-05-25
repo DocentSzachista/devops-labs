@@ -27,5 +27,17 @@ kind: StatefulSet
 kubectl apply -f deployment-mongodb.yaml
 
 4.5
+env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: DATABASE_URL
+        - name: LOGGING_MODE
+
+        kubectl apply -f backend-config.yaml
 
 5.0
+
+kubectl apply -f backup-cronjob.yaml
+kubectl get jobs --watch

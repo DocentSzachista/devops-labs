@@ -25,7 +25,15 @@ spec:
         - containerPort: 8000
         env:
         - name: DATABASE_URL
-          value: "mongodb://mongodb-service:27017"
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: DATABASE_URL
+        - name: LOGGING_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: logging
         volumeMounts:
           - mountPath: /var/log
             name: log-volume
