@@ -24,6 +24,18 @@ spec:
         volumeMounts:
         - name: backend-logs
           mountPath: /app/data/logs/
+        livenessProbe:
+          httpGet:
+            path: /isAlive
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /isReady
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 20
       volumes:
       - name: backend-logs
         persistentVolumeClaim:
