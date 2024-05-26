@@ -30,7 +30,7 @@ Są to kontenery które są tworzone przed odpaleniem faktycznego kontenera z wa
 
 Jak widać config jest prawie taki sam.
 
-## LiveNess i ProbinnesProbe
+## LiveNess i ReadinnesProbe
 
 - Liveness Probe - jest to mechanizm, który sprawdza, czy aplikacja jest nadal aktywna i działa poprawnie. Liveness probe jest używana do wykrywania, czy aplikacja jest w stanie obsługiwać żądania, czy może została zawieszona lub uległa awarii. Przykładowo, może wysyłać żądania HTTP do serwera aplikacji i oczekiwać odpowiedzi z kodem stanu 200 OK. Jeśli odpowiedź nie jest zgodna z oczekiwaniami (na przykład otrzymujemy kod stanu 404 Not Found), to Kubernetes może zinterpretować to jako sygnał, że aplikacja nie działa poprawnie i podejmować odpowiednie działania, takie jak restart kontenera.
 
@@ -154,9 +154,20 @@ kubectl logs <nazwa-poda> -c <nazwa-init-containera>
 
 ### 5.0 A teraz ograniczmy ruch sieciowy.
 
+#### Ważne
+Domyślnie w minikubie nie działa network policy. Aby zaczęło działać należy zainstalować wtyczkę która na to zezwala, chociażby Calico.
+Jak to zrobić.
+
+1. Wrzucić komendę: `minikube start --network-plugin=cni --cni=calico`.
+2. Poczekać aż się plugin zainstaluje. Można to podejrzeć za pomocą: `watch kubectl get pods -l k8s-app=calico-node -A`. Jak w kolumnie `READY` wam się wyświetli `1/1` to znaczy że wszystko już działa. Aby wyjść z poglądu wystarczy kliknąć kombinację klawiszy `Ctrl` + `C`. 
+Jeżeli chcecie przetestować na jakimś gotowym przykładzie
+https://docs.tigera.io/calico/latest/network-policy/get-started/kubernetes-policy/kubernetes-policy-basic
+
+
+#### Faktyczna treść polecenia
 To teraz zabawmy się w tworzenie network policy. Chciałbym dostać od was następujące rzeczy:
 
-- Network policy które zezwala na ruch TYLKO pomiędzy podami należącymi do namespace'a waszej aplikacji.
+- Network policy które zezwala na ruch TYLKO pomiędzy podami należącymi do namespace'a waszej aplikacji. 
 - Network policy ma zostać dodany do deployment'u / StatefullSeta z bazą danych
 - Jakikolwiek ruch sieciowy spoza klastra ma być blokowany do podów bazy danych. 
 
@@ -170,7 +181,7 @@ Podpowiedzi:
 
 - https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 - https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
-- 
+- https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 
 <!-- ### Mini projekcik do zbierania logów z kubernetesa. 

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db-statefulset
+  namespace: presentation
+  labels:
+    app: database
+spec:
+  serviceName: database
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: database
+        image: mongo:4.4.6
+        ports:
+        - containerPort: 27017
+          name: db-port
+        volumeMounts:
+        - mountPath: "data/db"
+          name: log-volume-claim
+
+  volumeClaimTemplates:
+  - metadata:
+      name: log-volume-claim
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi

@@ -36,3 +36,5 @@ CMD ["python", "main.py"]
 #docker run --network=siec -v mongo_volume:/data/db --name mongov_2 -d mongodb/mongodb-community-server
 #docker exec -it mongov_2 bash
 #exit
+
+CMD ["python3", "main.py"]
