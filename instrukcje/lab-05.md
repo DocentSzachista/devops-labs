@@ -90,16 +90,17 @@ Istnieje wiele więcej featerów w helmie, chociażby uwzględnianie zasobów wa
 
 ### 3.0 i 3.5 Korzystanie z gotowców be like
 
-Z racji, że najczęściej korzysta się już z gotowych paczek to na pierwszy ogień pójdzie ogarnięcie grafany i Prometheusa
+Z racji, że najczęściej korzysta się już z gotowych paczek to na pierwszy ogień pójdzie ogarnięcie Grafany i Prometheusa. TLDR Grafana jest to narzędzie do wizualizacji różnego rodzaju danych zaczynając od liczby zapisów w bazie danych a kończac na wyciąganiu informacji o zużyciu procesora. Prometheus natomiast jest to stricte narzędzie do monitorowania środowisk programistycznych. Udostępnia API z którego latwo można pobierać metryki.
 
-Co macie zrobić:
+Także po przykrótkim wprowadzeniu do narzędzi oto co macie zrobić:
 - Na 3.0
     - Pobrać i zainstalować helm chart prometheus'a  
     - Pobrać i zainstalować helm chart grafany 
-    - Udostępnić grafanę do logowania się przez przeglądarkę
+    - Udostępnić grafanę do logowania się przez przeglądarkę (Możecie napisać sobie serwis do tego, możecie zrobić port forwarding przez linię komend)
 - Na 3.5
     - Dodać pomiary dla metryk z prometheusa np zużycie procesora, pamięci, ramu. 
-    - Polecam skorzystać z gotowców będących w internecie. Nikt sam tego nie robi :p 
+    - Polecam skorzystać z gotowców będących w internecie. Nikt sam tego nie robi :p
+    - Możliwe że część wykresów nie będzie wam działać ale jest to już poza zakresem tego kursu. 
 
 
 ### Wasz własny helm chart
@@ -108,7 +109,9 @@ W repozytorium na ścieżce `projekt_helm` został utworzony gotowy projekt helm
 
 
 #### 4.0 Taka ocena za free 
-Można skonfigurować helm charta tak aby nam wyświetlał jakieś dodatkowe informacje po instalacji aplikacji. Dlatego proszę sobie dodać taki plik o nazwie `notes.txt` i napisać cokolwiek. Może być żarcik, może być suche hello world. Twórczośc pozostawiam wam.
+Można skonfigurować helm charta tak aby nam wyświetlał jakieś dodatkowe informacje po instalacji aplikacji. Dlatego proszę sobie dodać taki plik o nazwie `notes.txt` i napisać cokolwiek. Może być żarcik, może być suche hello world. Twórczość pozostawiam wam. Jak ktoś chce może się pobawić go template'ami. Po więcej odsyłam [tutaj](
+https://helm.sh/docs/chart_template_guide/notes_files/):
+
 
 
 #### 4.5 i 5.0 Pora na wasz własny deployment 
@@ -126,4 +129,7 @@ Ale do rzeczy co jest tutaj dla was do zrobienia:
 3. Następnie należy dodać odniesienia do pliku values.yaml tak aby móc potem za pomocą tego pliku ustawiać opcje podane w punkcie pierwszym. 
 
 
+## Źródła, pomoce 
 
+- Dokumentacja [Helma](https://helm.sh/docs/)
+- Przykładowy tutorial ze stawiania prometeusza i grafany [link](https://semaphoreci.com/blog/prometheus-grafana-kubernetes-helm)
