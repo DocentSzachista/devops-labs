@@ -9,7 +9,7 @@ Repozytorium trzymające instrukcje do zajęć laboratoryjnych jakie prowadzę n
 
 - W przypadku opóźnienia w wysyłaniu laboratoriów obniżam ocenę o **0.5**, jeżeli laboratorium nie zostanie wysłane do czasu rozpoczęcia kolejnych zajęć to student otrzymuje **2.0** z możliwością poprawy, lecz wtedy ustalamy indywidualnie. 
 
-- Z każdego laboratorium student może otrzymać ocenę w zakresie **2.0** - **5.0**
+- Z każdego laboratorium student może otrzymać ocenę w zakresie **2.0** - **5.0**. Wyjątkiem jest laboratorium numer 6, gdzie student otrzymuje jedynie zaliczenie poprzez zrobienie krótkiego kursu udostępnionego przez prowadzącego w ramach zajęć i udostępnienie odznaki wydawanej przez Google.
 
 - Ocena końcowa z części laboratoriów jest liczona w następujący sposób: Średnia ocen z laboratoriów + aktywność, gdzie każda ocena z laboratoriów musi być wyższa niż 2.0
 
