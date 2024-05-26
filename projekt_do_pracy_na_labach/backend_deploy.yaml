@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: app-namespace
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-service
+        image: backend_img:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: pv-backend 
+          mountPath: /app
+        livenessProbe: 
+          httpGet:
+            path: /isAlive 
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe: 
+          httpGet:
+            path: /isReady 
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 20
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-backend
+              key: database-url
+        - name: logging
+          valueFrom:
+            configMapKeyRef:
+              name: configmap-backend
+              key: logging
+      volumes:
+      - name: pv-backend 
+        persistentVolumeClaim:
+          claimName: pv-backend-claim
+
