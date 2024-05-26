@@ -1,41 +1,47 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: allow-namespace-traffic
-  namespace: namespace2
+  name: mongodb-statefulset
+  labels:
+    app: mongodb
 spec:
-  podSelector:
-    matchLabels: {}
-  policyTypes:
-  - Ingress
-  - Egress
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: namespace2
-  egress:
-  - to:
-    - namespaceSelector:
-        matchLabels:
-          name: namespace2
----
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: restrict-db-traffic
-  namespace: namespace2
-spec:
-  podSelector:
+  serviceName: "mongodb"
+  replicas: 1
+  selector:
     matchLabels:
       app: mongodb
-  policyTypes:
-  - Ingress
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: namespace2
-    ports:
-    - protocol: TCP
-      port: 27017
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb-container
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+      initContainers:
+      - name: check-backup
+        image: busybox:latest
+        command: ['sh', '-c', 'if [ -e /data/backup/example.txt ]; then echo "Plik istnieje"; else echo "Plik nie istnieje"; fi']
+        volumeMounts:
+        - name: backup-volume
+          mountPath: /data/backup
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+  - metadata:
+      name: backup-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
