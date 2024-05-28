@@ -1,0 +1,8 @@
+Zainstalowano {{ .Chart.Name }}.
+
+Nazwa: {{ .Release.Name }}.
+
+Aby dowiedziec sie wiecej sprawdz te komendy
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
