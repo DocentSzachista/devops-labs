@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pvc-backend
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: pvc-backend
+            persistentVolumeClaim:
+              claimName: pvc-backend
+          restartPolicy: OnFailure
+          containers:
+            - name: mongo-db
+              image: mongo:latest
+              command : ["/bin/sh", "-c"]
+              args: ["mongodump --uri \"mongodb://mongo-db.mongo-service.lab3/?replicaSet=rs0\" --db mongo-db --out /backup/$(date +%Y-%m-%d_%H-%M-%S)"]
+              env: 
+              # service
+              - name: MONGODB_HOST
+                valueFrom:
+                  configMapKeyRef:
+                    name: mongo-config
+                    key: mongo-url
+              volumeMounts:
+              - mountPath: "/backup/"
+                name: backup

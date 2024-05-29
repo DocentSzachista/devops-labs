@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-mongo
+spec:
+  podSelector:
+    matchLabels:
+      app: mongo
+  policyTypes:
+  - Ingress
+  - Egress
+  # ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+      matchLabels:
+        environment: lab3
+    - podSelector:
+      matchLabels:
+        app: backend
+    ports:
+    - protocol: TCP
+      port: 8000
+  # engress
+  egress:
+  - to:
+    - namespaceSelector:
+      matchLabels:
+        environment: lab3
+    - podSelector:
+      matchLabels:
+        app: mongodb
+    ports:
+    - protocol: TCP
+      port: 27017

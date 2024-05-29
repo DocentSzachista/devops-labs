@@ -23,7 +23,7 @@ notes.txt
 - `templates` Folder w którym są trzymane templatki zasobów które zostaną podczas instalacji utworzone. Korzystają one z pliku `values.yaml` z którego pobierają wartości, na przykład liczbę replik czy porty na których aplikacja ma zostac udostepniona.
 
 ## Podstawowe komendy
-- ```helm create <nazwa-projekt>``` - Jest to komenda która w ścieżce której jesteście wszystkie wymagane pliki do helm chart'a.
+- ```helm create <nazwa-projekt>``` - Jest to komenda, która w ścieżce której jesteście tworzy wszystkie wymagane pliki do helm chart'a.
 
 - ```helm install <nazwa-instalacji> <scieżka-do-projektu>``` - instaluje projekt do klastra kubernetesowego. 
     - Pierwszy argument to jest po prostu nazwa do jakiej będziemy chcieli się potem odwoływać w helmie

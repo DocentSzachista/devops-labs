@@ -1,0 +1,32 @@
+## grafana
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install grafana grafana/grafana
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+-> password: q28aKrD2qw2WnLvRgEYNnIsKa8GhABYqvNAAkRCi
+minikube service grafana-ext
+
+
+## prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+minikube service prometheus-server-ext
+
+## both
+kubectl get pods
+kubectl get service
+odpalamy grafane i prometheusa w dwóch cli
+wchodzimy na grafane do first data source
+wybieramy prometheusa
+wpisujemy w pole URL ip z ClusterIP (czyli to wyżej w cli (to jest jak ktoś będzie chciał ściągać żeby wiedział jak to zrobić))
+wchodzimy na stronę: https://grafana.com/grafana/dashboards/
+wybieramy coś ciekawego (ale to co używamy!) 
+ja wybrałem: Kubernetes cluster monitoring (via Prometheus)
+kopiujemy dashboard ID po prawej na dole
+wracamy do grafany klikamy dashboard
+potem new -> import i ctrl+v w górne pole
+potem load i wybieramy na dole skąd mają być pobierane dane (jedna opcja tam jest)
+i potem import i wsio diała 

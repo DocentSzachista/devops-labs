@@ -2,13 +2,16 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 3 
+
+namespace:
+  name: lab
 
 image:
-  repository: nginx
-  pullPolicy: IfNotPresent
+  repository: backend-image:latest
+  pullPolicy: IfNotPresent # zostawiłem tak jak było ze wzgledu na najbezpieczniejszą opcję ze wzgledu na błędy występujące z ImagePullBackOff występujące dla wszyskich innych oprócz Never (fajnie by było gdyby obraz był na docker hub)
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "backend"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -40,8 +43,8 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
-  port: 80
+  type: NodePort # zmiana dlatego że chcemy z zewnątrz mieć dostęp
+  port: 8000
 
 ingress:
   enabled: false

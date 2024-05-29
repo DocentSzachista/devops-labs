@@ -1,0 +1,32 @@
+# https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-backend
+  namespace: lab3
+spec:
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 500Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-backend
+  namespace: lab3
+spec:
+  claimRef:
+    namespace: lab3
+    name: pvc-backend
+  persistentVolumeReclaimPolicy: Delete
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 500Mi
+  hostPath:
+    path: /data/pv_backend/
