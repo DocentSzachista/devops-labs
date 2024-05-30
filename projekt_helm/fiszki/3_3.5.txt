@@ -1,0 +1,32 @@
+### 3.0
+
+## Grafana
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install grafana grafana/grafana
+kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+# command output: cXVvMdWBPoYhdZ6OGyUfQNUYz2Lxd3HmFFXvRi1o
+kubectl port-forward service/grafana 3000:80
+# login as
+# username: admin
+# password: cXVvMdWBPoYhdZ6OGyUfQNUYz2Lxd3HmFFXvRi1o
+
+## Prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+minikube service prometheus-server-ext
+
+
+### 3.5
+
+# Terminal 1:
+kubectl port-forward service/grafana 3000:80
+# Terminal 2:
+minikube service prometheus-server-ext
+
+# Grafana -> Data sources -> Prometheus
+-> Prometheus server URL -> Build dashboard
+-> Import a dashboard -> from https://grafana.com/grafana/dashboards/6417-kubernetes-cluster-prometheus/
+-> Select a Prometheus data source -> Done :)
