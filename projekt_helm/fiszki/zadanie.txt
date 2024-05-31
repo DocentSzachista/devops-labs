@@ -1,0 +1,20 @@
+### 3.0
+
+## Grafana
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install grafana grafana/grafana
+kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
+# command output: k6CqOS3z0ngFLff9fe0qhOKt1tejOM3JwDobx2eM
+kubectl port-forward service/grafana 3000:80
+# login as
+# username: admin
+# password: k6CqOS3z0ngFLff9fe0qhOKt1tejOM3JwDobx2eM
+
+## Prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+minikube service prometheus-server-ext
+
