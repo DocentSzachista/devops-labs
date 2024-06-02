@@ -1,0 +1,33 @@
+LABORATORIUM 5 - HELM CHARTS, CZYLI JAK AUTOMATYZOWAĆ TOOL'A DO AUTOMATYZACJI
+
+helm install -f fiszki/values.yaml fiszki fiszki
+
+===
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+helm install prometheus prometheus-community/prometheus
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+
+minikube service prometheus-server-ext
+
+===
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+helm install grafana grafana/grafana
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+
+minikube service grafana-ext
+
+===
+
+Tutaj, w osobnych terminalach, odpalone zostały prometheus oraz grafana.
+Następnie, ze strony internetowej https://grafana.com/grafana/dashboards/
+wybrany i zaimportowany został jeden z dashboardów - w moim przypadku
+był to dashboard o nazwie "Kubernetes Cluster (Prometheus)".
+Import nastąpił poprzez skopiowanie numeru ID wybranego dashboardu
+i wklejeniu go w odpowiednie miejsce z przyciskiem "load" oraz
+"import". Wszystko działało poprawnie, więc laboratorium ukończone.
