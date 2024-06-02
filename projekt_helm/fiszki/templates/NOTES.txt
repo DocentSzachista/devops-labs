@@ -1,0 +1,15 @@
+====================================================================================
+==                                                                                ==
+==  Thank you for installing {{ .Chart.Name }}.
+==                                                                                ==
+==  Your release is named {{ .Release.Name }}.
+==                                                                                ==
+==  To die of cringe, read the following joke:                                    ==
+==                                                                                ==
+==    Rozmawia dwóch informatyków:                                                ==
+==    - Ale zimno w tym pokoju. Mógłbyś zamknąć okno?                             ==
+==    - Jasne.                                                                    ==
+==    Alt + F4.                                                                   ==
+==                                                                                ==
+==                                                                                ==
+====================================================================================
