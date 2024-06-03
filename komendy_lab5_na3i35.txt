@@ -1,0 +1,16 @@
+kubectl create namespace monitoring
+helm install my-grafana grafana/grafana --namespace monitoring
+helm install prometheus prometheus-community/prometheus --namespace monitoring
+helm list -n monitoring
+get pods --namespace monitoring
+
+my-grafana-77f8756d57-nprlf                         1/1     Running   0          10m
+
+kubectl --namespace monitoring port-forward my-grafana-77f8756d57-nprlf 3000
+kubectl get secret --namespace monitoring my-grafana -o jsonpath="{.data.admin-password}"
+
+Ylg2R2FnbTlWdzFyVmF1MmNickpSeDExMzRUeHc0UlhkTmdPdzcxTA==
+
+[Text.Encoding]::Utf8.GetString([Convert]::FromBase64String('Ylg2R2FnbTlWdzFyVmF1MmNickpSeDExMzRUeHc0UlhkTmdPdzcxTA=='))
+
+bX6Gagm9Vw1rVau2cbrJRx1134Txw4RXdNgOw71L
