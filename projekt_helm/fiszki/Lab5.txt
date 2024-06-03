@@ -1,0 +1,42 @@
+Zadanie na 3
+minikube start
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+kubectl get all
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+minikube service prometheus-server-ext
+
+helm repo add grafana https://grafana.github.io/helm-charts 
+helm repo update
+helm install grafana grafana/grafan
+kubectl get service
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+minikube service grafana-ext
+kubectl get secret -n default grafana -o json
+Admin password: VldiVjBrV2pIQnhQWlF4azB4amlPUE9VWmNyNG1ldEdTTGNZeDZTWg==
+[Text.Encoding]::Utf8.GetString([Convert]::FromBase64String('VldiVjBrV2pIQnhQWlF4azB4amlPUE9VWmNyNG1ldEdTTGNZeDZTWg=='))
+Odszyfrowane haslo: VWbV0kWjHBxPZQxk0xjiOPOUZcr4metGSLcYx6SZ
+
+Zadanie na 3.5
+Cały czas pojawia się error 400, dla którego nie znalazłem działającego rozwiązania.
+
+Zadanie na 4.0
+kubectl create namespace apka
+kubectl create namespace presentation
+helm install app ./fiszki/
+WYNIK:
+
+NAME: app
+LAST DEPLOYED: Mon Jun  3 19:39:30 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Żarcik by umilić sprawdzanie programów:
+- Co robi Jan Sobieski w górach?
+- Jan sobie ski
+
+Zadanie na 5.0
+helm install app ./fiszki/
