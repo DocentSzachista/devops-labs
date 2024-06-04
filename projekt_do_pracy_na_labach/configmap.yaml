@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: configmap-backend
-  namespace: lab2
+  namespace: samczuk
 data:
   logging: "DEBUG"
   database-url: "mongodb://27017"
