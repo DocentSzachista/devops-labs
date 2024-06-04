@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: app-namespace
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: backend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /isAlive
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /isReady
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 20
+        volumeMounts:
+        - name: pv-backend 
+          mountPath: /app
+        env: 
+          - name: DATABASE_URL
+            value: "mongodb://db-service:27017"
+      volumes:
+      - name: pv-backend 
+        persistentVolumeClaim:
+          claimName: pv-backend-claim
+   
+
+        
+
+#Komendy do zadania na 3.5
+#kubectl apply -f backend_deployments.yaml
+#kubectl apply -f backend_service.yaml
+#minikube service backend-service
+#kubectl delete deployments --all
+#kubectl delete services backend-service
+
+#Komendy do zadania na 4.0
+#kubectl create namespace app-namespace
+#kubectl config set-context --current --namespace=app-namespace
+#kubectl apply -f backend_deployments.yaml
+#kubectl apply -f backend_service.yaml
+#minikube service backend-service -n app-namespace
+
+#Komendy do zadania na 5.0
+#kubectl create namespace app-namespace
+#kubectl config set-context --current --namespace=app-namespace
+#kubectl apply -f .
+#kubectl get deployments
+#kubectl get services
+#minikube service backend-service -n app-namespace

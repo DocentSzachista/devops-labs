@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sfs-db
+  namespace: app-namespace
+spec:
+  serviceName: "mongo-db"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mongo-db
+  template:
+    metadata:
+      labels:
+        app: mongo-db
+    spec:
+      containers:
+      - name: mongo-db
+        image: mongo:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: sfs-db-volume
+          mountPath: /data/db
+      initContainers:
+        - name: check-backup
+          image: busybox:latest
+          command: ["sh", "-c", "if [ -e /data/db/backup.txt ]; then echo 'Plik istnieje!!!'; else echo 'Plik nie istnieje!!!'; fi"]
+          volumeMounts:
+          - name: backup-volume
+            mountPath: "/data/db"
+  volumeClaimTemplates:
+  - metadata:
+      name: sfs-db-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 500Mi

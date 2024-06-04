@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: {{.Values.namespace.name}}
+  labels:
+    app: {{.Values.image.type}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{.Values.image.type}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.image.type}}
+    spec:
+      containers:
+      - name: backend
+        image: {{.Values.image.image}}
+        imagePullPolicy: {{.Values.image.imagePullPolicy}}
+        ports:
+        - containerPort: {{.Values.service.port}}
+        env: 
+          - name: DATABASE_URL
+            value: "mongodb://db-service:27017"

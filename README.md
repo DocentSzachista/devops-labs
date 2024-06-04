@@ -9,7 +9,7 @@ Repozytorium trzymające instrukcje do zajęć laboratoryjnych jakie prowadzę n
 
 - W przypadku opóźnienia w wysyłaniu laboratoriów obniżam ocenę o **0.5**, jeżeli laboratorium nie zostanie wysłane do czasu rozpoczęcia kolejnych zajęć to student otrzymuje **2.0** z możliwością poprawy, lecz wtedy ustalamy indywidualnie. 
 
-- Z każdego laboratorium student może otrzymać ocenę w zakresie **2.0** - **5.0**
+- Z każdego laboratorium student może otrzymać ocenę w zakresie **2.0** - **5.0**. Wyjątkiem jest laboratorium numer 6, gdzie student otrzymuje jedynie zaliczenie poprzez zrobienie krótkiego kursu udostępnionego przez prowadzącego w ramach zajęć i udostępnienie odznaki wydawanej przez Google.
 
 - Ocena końcowa z części laboratoriów jest liczona w następujący sposób: Średnia ocen z laboratoriów + aktywność, gdzie każda ocena z laboratoriów musi być wyższa niż 2.0
 
@@ -25,10 +25,10 @@ Repozytorium trzymające instrukcje do zajęć laboratoryjnych jakie prowadzę n
 |---|---|
 |1.| Podstawy konteneryzacji - Docker i Docker compose 
 |2.| Podstawy Kubernetesa
-|3.| | 
-|4.|
+|3.| O storage'u słów kilka(dziesiąt)| 
+|4.| InitContainers i inne magiczne sztuczki. |
 |5.| Helm charts, czyli automatyzacja deploymentu aplikacji.
-|6.| 
+|6.| Coś niecoś o Google cloudzie 
 
 
 ## Konsultacje
