@@ -2,13 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend-service
-  namespace: {{.values.namespace.name}}
+  namespace: {{.Values.namespace.name}}
 spec:
-  type: {{.values.service.type}}
+  type: {{.Values.service.type}}
   selector:
-    app: {{.values.image.type}}
+    app: {{.Values.image.type}}
   ports:
     - protocol: TCP
-      port: {{.values.service.port}}
-      targetPort: {{.values.service.port}}
-      nodePort: 30005
+      port: {{.Values.service.port}}
+      targetPort: {{.Values.service.port}}
+      nodePort: 30008
