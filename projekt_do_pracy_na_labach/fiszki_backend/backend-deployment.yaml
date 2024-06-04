@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: lab4
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-service
+          image: fiszki_backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: pv-backend    
+              mountPath: /app
+      volumes:
+        - name: backend-volume
+          persistentVolumeClaim:
+            claimName: task-pv-claim
+   	livenessProbe:
+      	 httpGet:
+       	  path: /isAlive
+      	  port: 8000
+         initialDelaySeconds: 30
+         periodSeconds: 30
+        readinessProbe:
+         httpGet:
+          path: /isReady
+          port: 8000
+         initialDelaySeconds: 20
+         periodSeconds: 20
