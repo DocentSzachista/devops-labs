@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: apka
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      volumes:
+      - name: backend-storage
+        persistentVolumeClaim:
+          claimName: volumeclaim
+      containers:
+      - name: laby2
+        image: laby:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: backend-storage
+          mountPath: /data/pv_backend/
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: backend-config
+                key: logging
+        livenessProbe:
+          httpGet:
+            path: /isAlive
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /isReady
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 20
