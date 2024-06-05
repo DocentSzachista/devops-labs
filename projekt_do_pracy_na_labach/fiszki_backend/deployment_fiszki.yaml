@@ -23,16 +23,16 @@ spec:
         - containerPort: 8000
         livenessProbe:
           httpGet:
-            path: /healthz
+            path: /isAlive
             port: 8080
           initialDelaySeconds: 15
-          periodSeconds: 20
+          periodSeconds: 30
         readinessProbe:
           httpGet:
-            path: /readyz
+            path: /isReady
             port: 8080
           initialDelaySeconds: 10
-          periodSeconds: 15
+          periodSeconds: 20
 
 #          - name: db-volume
 #            mountPath: /app
