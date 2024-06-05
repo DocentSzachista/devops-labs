@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-backend
+  name: backup-volume-claim
   namespace: apka
 spec:
   accessModes:

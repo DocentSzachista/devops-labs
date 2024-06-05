@@ -15,13 +15,28 @@ spec:
       labels:
         app: backend
     spec:
+      volumes:
+    - name:backend-storage
+    persistentVolumeClaim:
+    claimName: volumeClaim
       containers:
       - name: laby2  
         image: kube:v1
         imagePullPolicy: Never
         ports:
         - containerPort: 8000
-
+        livenessProbe:
+          httpGet:
+            path: /isAlive
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /isReady
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 20
 
 #minikube start 
 #minikube docker-env | Invoke-Expression
