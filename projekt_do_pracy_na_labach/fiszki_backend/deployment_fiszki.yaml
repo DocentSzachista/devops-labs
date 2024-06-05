@@ -21,13 +21,31 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 8000
-        volumeMounts:
-          - name: db-volume
-            mountPath: /app
-      volumes:
-        - name: backend-volume
-          persistentVolumeClaim:
-            claimName: pv-claim
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 15
+
+#          - name: db-volume
+#            mountPath: /app
+#      volumes:
+#        - name: backend-volume
+#          persistentVolumeClaim:
+#            claimName: pv-claim
+
+
+
+
+
+
 
 # Wersja na 4.0:
 

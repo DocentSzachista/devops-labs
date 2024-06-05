@@ -22,6 +22,10 @@ spec:
         volumeMounts:
         - name: pv-backend
           mountPath: /data/db
+      initContainers:
+      - name: check-backup
+        image: busybox:latest
+        command: ["sh", "-c", "if [ -e /data/backup/example.txt ]; then cp -r /data/backup /data/db; else echo 'Plik nie istnieje'; fi"]
   volumeClaimTemplates:
   - metadata:
       name: db-volume
