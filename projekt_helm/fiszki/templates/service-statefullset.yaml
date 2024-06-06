@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: apka
+  namespace: {{.Values.namespace.name}}
   name: db-service
 spec:
   type: ClusterIP

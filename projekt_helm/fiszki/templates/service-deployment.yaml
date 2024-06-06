@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: apka
+  namespace: {{.Values.namespace.name}}
   name: backend-service
 spec:
   type: NodePort
@@ -10,4 +10,4 @@ spec:
   ports:
     - protocol: TCP
       port: 8000
-      nodePort: 30009
+      nodePort: {{.Values.backend.service.nodePort}}
