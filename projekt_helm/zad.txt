@@ -1,0 +1,63 @@
+zad3.
+
+minikube start
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+helm install grafana grafana/grafana
+$encodedPassword = kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}"
+$decodedPassword = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($encodedPassword))
+Write-Output $decodedPassword
+uzysykane haslo --> A7eSd2Q5mM6RAhskw99n52NU2lbD3GSFFZT1qnep
+kubectl port-forward service/grafana 3000:80
+
+http://localhost:3000/
+login: admin, haslo: A7eSd2Q5mM6RAhskw99n52NU2lbD3GSFFZT1qnep
+i jestem zalogowany
+
+zad 3.5
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install node-exporter prometheus-community/prometheus-node-exporter
+kubectl edit configmap prometheus-server
+Zmiany w config mapie, dodanie do sekcji scrape_configs nastepujacych lini kodu:
+
+- job_name: 'node-exporter'
+  static_configs:
+  - targets: ['node-exporter.default.svc.cluster.local:9100']
+
+restart podu (zmieniona config mapa): kubectl get pods --> kubectl delete pod prometheus-server-6949d6cfdd-t8qsz
+
+polaczenie grafeny z prometheusem:
+zalogowanie sie do grafeny --> connections --> Data sources --> Add new data source --> wybieramy Prometheus
+--> wpisujemy jego serwer URL w tym przypadku http://10.104.70.36:80 --> dajemy Save & Test
+
+Stworzenie (zaimportowanie Dashboardu)
+Dashboards --> new dashboard --> import dashboard --> na stronie grafana.com/dashboards
+ znajdujemy to co nas interesuje --> ja wybrałem " Prometheus system " --> skopiowałem kod który pozwala zaimportowac
+ten dashboard (kod: 159) --> wpisanie tego kodu w grafanie i zaimportowanie
+
+Przykład działania dashboardu jest na zdjeciu
+
+
+
+zad 4.0
+
+Stworzenie pliku NOTES.txt w folderze templates i dodanie do niego tekstu.
+
+PS C:\Users\marek\Desktop\laby_deops\ostatnie_laby\devops-labs\projekt_helm> helm install app ./fiszki/
+NAME: app
+LAST DEPLOYED: Thu Jun  6 00:53:52 2024
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Rozmawiają dwie koleżanki.
+- Słuchaj skunksa sobie kupiłam
+ - A po co Ci skunks?
+- Jak on wywija języczkiem a jak łapkami sobie pomaga, normalnie minetę strzela jak mistrz. jest bossski!!!
+- A smród?
+- Na początku trochę rzygał, ale potem się przyzwyczaił
