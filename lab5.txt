@@ -1,0 +1,21 @@
+Zadanie na 3.0
+
+minikube start
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+kubectl get all
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+minikube service prometheus-server-ext
+
+helm repo add grafana https://grafana.github.io/helm-charts 
+helm repo update
+helm install grafana grafana/grafan
+kubectl get service
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+minikube service grafana-ext
+kubectl get secret -n default grafana -o json
+
+następnie zalogować się na stronie grafana poprzez haslo i login 
+
+Zadanie na 3.5
