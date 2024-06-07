@@ -1,4 +1,4 @@
-replicaCount: 1
+replicaCount: 2
 
 image:
   repository: krycyg/repozytorium
@@ -10,3 +10,9 @@ service:
   port: 8000
 
 resources: {}
+
+backend:
+  replicas: 1
+  imageTag: fiszki_backend
+  servicePort: 8000
+  imagePullPolicy: IfNotPresent

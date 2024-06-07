@@ -33,8 +33,7 @@ helm create my-backend
 helm install my-backend ./my-backend
 
 
-4.5
-
 
 5.0
 
+helm upgrade my-backend .

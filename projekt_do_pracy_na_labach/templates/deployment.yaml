@@ -1,40 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-backend
+  name: backend-deployment
+  namespace: {{.Values.namespace.name}}
   labels:
-    app: {{ .Chart.Name }}
+    app: fiszki_backend
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{.Values.replicaCount}}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: fiszki_backend
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: fiszki_backend
     spec:
       containers:
-      - name: backend
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+      - name: backend-service
+        image: "{{.Values.backend.image.repository}}:{{.Values.backend.image.tag}}"
+        imagePullPolicy: {{.Values.backend.image.pullPolicy}}
         ports:
-        - containerPort: {{ .Values.service.port }}
+        - containerPort: 8000
         env:
         - name: DATABASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: backend-config
-              key: DATABASE_URL
-        - name: LOGGING_MODE
-          valueFrom:
-            configMapKeyRef:
-              name: backend-config
-              key: logging
-        volumeMounts:
-        - mountPath: /var/log
-          name: log-volume
-      volumes:
-      - name: log-volume
-        persistentVolumeClaim:
-          claimName: pv-backend-claim
+          value: "mongodb://172.22.224.1:27017"
