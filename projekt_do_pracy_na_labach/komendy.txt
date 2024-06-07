@@ -12,13 +12,25 @@ kubectl port-forward svc/grafana 8000:8000
 
 http://localhost:3000
 
+
+
+3.5
+zalogowanie do grafana
 Username: admin
 Password: admin
 
-3.5
+"Create" -> "Import"
+
+załadowanie dashboardów:
+
+Prometheus 2.0 Overview Dashboard- 3662
+Kubernetes All Nodes Dashboard- 3131
 
 4.0
 
+helm create my-backend
+
+helm install my-backend ./my-backend
 
 
 4.5
