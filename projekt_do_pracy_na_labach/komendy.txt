@@ -1,26 +1,27 @@
-3.0 i 3.5
+3.0 
 
-livenessProbe:
-          httpGet:
-            path: /isAlive
-            port: 8000
-          initialDelaySeconds: 15
-          periodSeconds: 30
-        readinessProbe:
-          httpGet:
-            path: /isReady
-            port: 8000
-          initialDelaySeconds: 10
-          periodSeconds: 20
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
 
-kubectl apply -f deployment-backend.yaml
+
+helm install prometheus prometheus-community/prometheus
+helm install grafana grafana/grafana
+
+kubectl port-forward svc/grafana 8000:8000
+
+http://localhost:3000
+
+Username: admin
+Password: admin
+
+3.5
 
 4.0
-kubectl apply -f statefulset-mongodb.yaml
+
 
 
 4.5
-minikube start --network-plugin=cni --cni=calico
 
 
 5.0
