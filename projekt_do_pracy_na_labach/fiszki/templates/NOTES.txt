@@ -1,0 +1,21 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+To learn more about the release, try:
+
+  $ helm status {{ .Release.Name }}
+  $ helm get all {{ .Release.Name }}
+
+{{- if .Values.ingress.enabled -}}
+Your application is accessible via the following URL(s):
+
+{{ range .Values.ingress.hosts -}}
+  http://{{ .host }}{{ (index .paths 0).path }}
+{{- end }}
+{{- else -}}
+Your application is running on NodePort {{ .Values.service.nodePort }}.
+You can access it using the following URL(s):
+
+  http://<NodeIP>:{{ .Values.service.nodePort }}
+{{- end }}
