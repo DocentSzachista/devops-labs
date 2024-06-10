@@ -5,7 +5,7 @@
 replicaCount: 3  # Ustawienie liczby replik
 
 image:
-  repository: nginx
+  repository: moja-apka
   pullPolicy: IfNotPresent
   tag: "latest"  # Ustawienie tagu obrazu kontenera
 
@@ -61,12 +61,12 @@ resources: {}
 
 livenessProbe:
   httpGet:
-    path: /
+    path: /health
     port: http
 
 readinessProbe:
   httpGet:
-    path: /
+    path: /ready
     port: http
 
 autoscaling:
