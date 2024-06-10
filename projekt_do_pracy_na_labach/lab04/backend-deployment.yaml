@@ -1,16 +1,17 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: backend-deployment
+  name: database-statefulset
 spec:
-  replicas: 2
+  serviceName: "db-service"
+  replicas: 1
   selector:
     matchLabels:
-      app: backend
+      app: database
   template:
     metadata:
       labels:
-        app: backend
+        app: database
     spec:
       initContainers:
       - name: init-db
@@ -22,35 +23,10 @@ spec:
         - name: db-data
           mountPath: /data/db
       containers:
-      - name: backend
-        image: backend-deployment-image:latest
+      - name: database
+        image: mongo:latest
         ports:
-        - containerPort: 80
-        resources:
-          requests:
-            cpu: "250m"
-            memory: "256Mi"
-          limits:
-            cpu: "500m"
-            memory: "512Mi"
-        livenessProbe:
-          httpGet:
-            path: /isAlive
-            port: 80
-          initialDelaySeconds: 30
-          periodSeconds: 30
-          timeoutSeconds: 5
-          failureThreshold: 3
-          successThreshold: 1
-        readinessProbe:
-          httpGet:
-            path: /isReady
-            port: 80
-          initialDelaySeconds: 30
-          periodSeconds: 20
-          timeoutSeconds: 5
-          failureThreshold: 3
-          successThreshold: 1
+        - containerPort: 27017
       volumes:
       - name: db-backup
         persistentVolumeClaim:
