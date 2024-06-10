@@ -1,0 +1,6 @@
+projekt_helm/
+├── Chart.yaml
+├── templates/
+│   └── deployment.yaml
+└── values.yaml
+
