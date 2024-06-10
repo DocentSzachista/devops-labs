@@ -15,13 +15,13 @@
 # docker run -d -p 8001:8000 --network siec1 -e DATABASE_URL="mongodb://baza_danych_1:27017" nazwa1
 
 ### 4.5 - Dodanie wolumenów do Dockerfile'a z bazą danych
-# docker volume create volume_1
+# docker volume create db_volume
 # docker run -d --name backend_v2 -v volume_1:/app nazwa1 fe0281c6c321b6f5b01b68f784708cdf8541305759300114b2528508a3ed56df
 # docker exec -it backend_v2 bash
 # echo "Dane testowe" > /app/plik_testowy.txt
 # exit
 # docker rm -f backend
-# docker run -d --name backend_v2 -v moj_wolumen:/app moj_obraz
+# docker run -d --name baza_danych_1 -v db:/data/db mongo
 # docker exec -it backend_v2 bash
 # cat /app/plik_testowy.txt
 # root@fe0281c6c321:/app# cat /app/plik_testowy.txt
