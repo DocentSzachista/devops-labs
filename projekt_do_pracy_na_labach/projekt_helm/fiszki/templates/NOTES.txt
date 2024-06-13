@@ -1,0 +1,50 @@
+Jak nazywa sie zona popa?
+.
+.
+.
+.
+Poparzona
+hahahahah
+
+3.0
+choco install Kubernetes-helm 
+minikube start
+helm search hub prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install prometheus prometheus-community/prometheus
+kubectl get service
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+minikube service prometheus-server-ext
+helm search hub grafana
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install grafana grafana/grafana
+kubectl get all
+kubectl get service
+minikube service grafana-ext
+tutaj otworzyła sie stronka z logowaniem
+odzyskiwanie hasła:
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+$encodedPassword = kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}"
+$decodedPassword = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($encodedPassword))
+Write-Output $decodedPassword
+Eyjl1HRjGandftRI0j45jSq2JPALBHCOkuSZV8J0
+login: admin
+Haslo: Eyjl1HRjGandftRI0j45jSq2JPALBHCOkuSZV8J0
+
+3.5
+na stronce grafena add new dashboard
+minikube service prometheus-server-ext - pobranie http prometeusa
+znalezienie dashboardu w bibliotece + dodanie nowego z id + dodanie prometeusa
+zadziałało, efekt w grafana wykresy.png
+
+4.0
+#Tworzymy plik txt w folderze.
+usuniecie starych wersji 
+helm uninstall app
+dodanie nowego przez helma
+PS C:\Users\tomas\VSCode\Docker\devops-labs\projekt_do_pracy_na_labach\projekt_helm> helm install app ./fiszki/ --namespace presentation --create-namespace
+zadzialalo, efekt na zart.png
+
+5.0 
+zmiany w plikach volumes.yaml, deployment.yaml, service-deployment.yaml oraz database.yaml

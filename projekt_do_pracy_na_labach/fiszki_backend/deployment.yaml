@@ -29,6 +29,13 @@ spec:
           httpGet:
             path: /isAlive
             port: 8000
+            volumeMounts:
+        - name: log-volume
+          mountPath: /var/log/app
+      volumes:
+      - name: log-volume
+        persistentVolumeClaim:
+          claimName: backup-volume-claim
           initialDelaySeconds: 15
           periodSeconds: 30
         readinessProbe:
