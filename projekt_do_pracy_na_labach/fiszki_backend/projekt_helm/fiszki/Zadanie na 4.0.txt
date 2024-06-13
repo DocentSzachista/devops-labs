@@ -1,0 +1,57 @@
+Zadanie na 3.0
+choco install Kubernetes-helm
+minikube start
+helm search hub prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install prometheus prometheus-community/prometheus
+helm install grafana grafana/grafana
+$encodedPassword = kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}"
+$decodedPassword = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($encodedPassword))
+Write-Output $decodedPassword
+#hasło które zostało uzyskane:  Eyjl1HRjGandftRI0j45jSq2JPALBHCOkuSZV8J0
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+
+Zadanie na 3.5
+helm search hub grafana
+minikube service grafana-ext #w celu skopiowania URL.
+#teraz działamy na stronie + dashboardy
+
+Zadanie na 4.0
+#Tworzymy plik txt w folderze.
+PS C:\Users\Piotr\Desktop\devops-labs-master\devops-labs\projekt_do_pracy_na_labach\fiszki_backend\projekt_helm
+helm install app ./fiszki/ --namespace presentation --create-namespace
+NAME: app
+LAST DEPLOYED: Thu Jun 13 23:11:31 2024
+NAMESPACE: presentation
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Andrzej miał grubego i starego jamnika. Pewnego dnia ten jamnik przychodzi do niego i mówi:
+
+-Słuchaj Andrzej, weź mnie wystaw na wyścigi chartów.
+
+-Zdziwiony patrzy na jamnika...
+
+-No stary, weź mnie wystaw, wygram.
+
+-Gościu myśli, kurde zwariowałem jamnik do mnie gada...
+
+-No weź mi zaufaj, mówię ci, wygram na bank. No uwierz we mnie.
+
+W końcu po paru przemyśleniach doszedł do wniosku, że skoro jamnik do niego gada to musi być wyjątkowy, wiec postawił na niego wszystkie oszczędności i dom w hipotekę.
+
+Przyszedł dzień wyścigu.
+
+Charty popędziły do przodu, zostawiając skundlonego jamnika w tyle.
+
+Kiedy charty dobiegły do mety, jamnik po przeczłapaniu kilku metrów rozpłaszczył się zasapany na ziemi.
+
+Facet zdenerwowany na maksa podbiega do swojego jamnika i pyta:
+
+-Jamnik!? Co się do #!$%@? jasnego stało???
+
+-Nie wiem Andrzej... naprawdę nie wiem...
