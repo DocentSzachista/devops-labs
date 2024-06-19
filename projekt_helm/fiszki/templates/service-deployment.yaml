@@ -1,0 +1,18 @@
+piVersion: v1
+kind: Service
+metadata:
+  namespace: {{.Values.namespace.name}}
+  name: {{ .Values.service.name }}
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+spec:
+  type: NodePort
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000
+      nodePort: {{ .Values.backend.service.nodePort }}

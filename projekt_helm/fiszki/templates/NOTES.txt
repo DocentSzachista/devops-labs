@@ -1,0 +1,33 @@
+Jak się nazywa kiedy gotujemy wodę na kilku palnikach jednocześnie?
+.
+.
+.
+.
+.
+Wielowrzątkowość
+
+
+#3.0:
+minikube start
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm install prometheus prometheus-community/prometheus
+helm repo add grafana https://grafana.github.io/helm-charts
+helm install grafana grafana/grafana
+
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+minikube service prometheus-server-ext
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+#pojawiło się okno do logowania do grafany, hasło do admina dostałem poprzez:
+kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+#3.5:
+#przez grafanę w przeglądarce zaimportowałem ten dashboard:
+https://grafana.com/grafana/dashboards/315-kubernetes-cluster-monitoring-via-prometheus
+#wpisałem tam http prometheusa - efekt widać na screenie
+
+#4.0:
+helm install app ./fiszki/ --namespace presentation --create-namespace
+żart się wyświetla jako NOTES w instalacji
+
+#5.0:
+zmiany w yamlach
